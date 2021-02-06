@@ -3,6 +3,9 @@
 - @author kazurayam
 - @date Feb 2021
 
+<!-- START doctoc -->
+<!-- END doctoc -->
+
 ## これは何か
 
 ひとつのディレクトリのなかに複数のサブプロジェクトを格納したレポジトリです。今後わたしがいろいろ仕事をするためにいくつもレポジトリを作るだろう。そのたびに環境とツールを整備するのでは手間がかかりすぎる。できるかぎり努力してこのプロジェクトの環境とツールを整備したうえで、これを複写して新しいレポジトリの下敷きを作ろう。Git HubのTemplate Repository機能を利用しよう。
@@ -11,7 +14,7 @@
 
 将来的にはサブプロジェクトの数は３つとかぎらないしPython言語だけとはかぎらない。サブプロジェクトをJavaやNodeで作ることもあるだろうな。
 
-## IntelliJ IDEAで複数モジュールのプロジェクトを作った
+## IntelliJ IDEAで複数モジュールから成るプロジェクトを作った
 
 わたしはJavaによる開発のため 統合開発環境 IntelliJ IDEA をずっと使ってきた。だからIDEAでPythonの開発もやることにした。IDEAでひとつの親プロジェクトのなかに複数のサブプロジェクトを持たせたかった。下記の記事を参考にした。
 
@@ -31,7 +34,7 @@ $ tree $ROOTPROJ
 
 3つのサブプロジェクトはどういう内容のプロジェクトか？
 
-### pycliapp
+### pycliappサブプロジェクトの概要
 
 このサブプロジェクトではcommandlineで実行するapplicationをPython言語で開発します。
 
@@ -39,14 +42,41 @@ $ tree $ROOTPROJ
    シンプルなアプリケーションをPython言語で作ります
 1. 標準的なPythonプロジェクトのディレクトリ構造を導入します
 1. アプリケーションをユニットテストします。そのために[pytest](https://docs.pytest.org/en/stable/)を利用します
-1. このサブプロジェクトに専用のPython仮想環境を作ります。pipenvを利用します
-1. IntelliJ IDEAに適切な設定を加えて `pycliapp` プロジェクトの開発作業をIDEAのなかですべてできるようにします
-1. 自作したPythonアプリケーションをライブラリ化します。PyPIに自分のためのアカウントを作って、PyPIにライブラリをアップロードして共有可能にします。
-1. 自作したPythonアプリケーションを組み込んだDockerイメージを作り、Dockerコンテナを立ち上げて自作アプリを動かします。Docker Hubに自分のためのアカウントを作って、Docker Hubにイメージをアップロードして共有可能にします。
-
-### pywebapp
-
-### pywebuitest
+1. このサブプロジェクトに専用のPython仮想環境を作ります。[pipenv](https://pypi.org/project/pipenv/) を利用します
+1. IntelliJ IDEAに適切な設定を加えます。この`pycliapp` プロジェクトの開発作業をIDEAのなかですべてできるようにします
+1. 自作したPythonアプリケーションを [pip](https://pypi.org/project/pip/) でライブラリ化します。[PyPI](https://test.pypi.org/) に自分のためのアカウントを作って、PyPIにライブラリをアップロードして共有可能にします。
+1. 自作したPythonアプリケーションを組み込んだ[Docker](https://www.docker.com/) イメージを作り、Dockerコンテナを立ち上げて自作アプリを動かします。[Docker Hub](https://hub.docker.com/) に自分のためのアカウントを作って、Docker Hubにイメージをアップロードして共有可能にします。
 
 
+### pywebappサブプロジェクトの概要
 
+このサブプロジェクトはWebサーバアプリケーションをPython言語で開発します。
+
+1. フレームワーク [Flask](https://palletsprojects.com/p/flask/) の [チュートリアル](https://flask.palletsprojects.com/en/1.1.x/tutorial/) を隅々まで写経して、ちゃんと動作するWebアプリケーションを作ります。
+1. チュートリアルのサンプルが動くDockerコンテナを自分のPCで立ち上げて、http://localhost:80/ でアクセスできるようにします。
+
+
+### pywebuitestサブプロジェクトの概要
+
+このサブプロジェクトはWebサーバアプリケーションのユーザー・インターフェースを自動化テストします。
+
+1. `pywebapp`サブプロジェクトが構築したWebアプリを対象とします。
+1. [Selenium](https://selenium-python.readthedocs.io/) を用いたPythonプログラムを開発してWebページをテストします。
+1. Page Object Model のデザインを用いてテストコードを設計します。
+
+
+
+
+
+## pycliappサブプロジェクトの説明
+
+TODO
+
+## pywebappサブプロジェクトの説明
+
+TODO
+
+## pywebuitestサブプロジェクトの説明
+
+
+TODO
