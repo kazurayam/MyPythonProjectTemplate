@@ -181,7 +181,9 @@ $ pyenv versions
   anaconda3-5.3.1
 ```
 
-これを見ると `system` に `*` がついています。この状態で `python` コマンドを投入すると macOSにプレインストールされたPython2.7が選択がされてしまう。これではつまらない。`pyenv global バージョン`コマンドで設定を切り替えます。今からはanaconda3-4.4.0を使うことにしましょう。
+これを見ると `system` に `*` がついています。この状態で `python` コマンドを投入すると macOSにプレインストールされたPython2.7が選択され実行されてしまう。これではつまらない。
+
+`pyenv global バージョン`コマンドで設定を切り替えます。今からはanaconda3-4.4.0を使うことにしましょう。
 
 ```
 $ pyenv global anaconda3-4.4.0
@@ -192,11 +194,9 @@ $ pyenv versions
   anaconda3-5.3.1
 ```
 
-これでanaconda3-4.4.0に切り替わりました。
-
 #### local
 
-なお特定のディレクトリにcdしてから `pyenv local anaconda3-5.3.1` とやればそのディレクトリのしたではglobalに指定したのと別のPython環境を使うことができます。
+なお特定のディレクトリにcdしてから `pyenv local anaconda3-5.3.1` とやればそのディレクトリのしたではglobalに指定したのではない別のPython環境を使うことができます。
 
 #### アンインストール
 
@@ -207,11 +207,160 @@ $ pyenv uninstall バージョン名
 ```
 
 
-### Python仮想環境を作る --- pipenv
+### pycliappサブプロジェクトのためにPython仮想環境を作る --- pipenv
 
-### 別マシンでPython仮想環境を再現する手順
+$ROOTPROJディレクトリの直下に `pycliapp` ディレクトリを作ります。`pyclipapp`にカレントディレクトリを移します。`pyclipapp`ディレクトリの絶対パスを SUBPROJ という記号で表すことにします。つまり下記の操作をせよ。
 
-### IntelliJ IDEAでモジュールの設定をする
+```
+$ cd $ROOTPROJ
+$ mkdir pycliapp
+$ export $SUBPROJ=$(pwd)
+```
+
+$SUBPROJディレクトリのなかにPython仮想環境を作りましょう。pipenvを使います。[pipenv](https://pypi.org/project/pipenv/) はPython仮想環境を作るツールです。下記の記事を参考にした。
+
+- [Pipenvを使ったPython開発まとめ](https://qiita.com/y-tsutsu/items/54c10e0b2c6b565c887a)
+
+#### pipenvをインストールする
+
+pyenvで選択したバージョンのanacondaにpipenvをインストールします。・・・たぶんもう入っているんですがねんのため。
+
+```
+$ cd ~
+$ pip install pipenv
+```
+#### pycliappプロジェクトのために専用のPython仮想環境を作る
+
+$SUBPROJにcdします。そして下記のコマンドを投入する。
+
+```
+$ cd $SUBPROJ
+$ pipenv --python 3
+```
+
+すると仮想環境が作られます。
+
+```
+Creating a virtualenv for this project...
+Pipfile: /Users/myname/github/MultipleModulesProjectTemplate/pycliapp/Pipfile
+Using /usr/local/bin/python3.8 (3.8.5) to create virtualenv...
+⠋ Creating virtual environment...created virtual environment CPython3.8.5.final.0-64 in 549ms
+  creator CPython3Posix(dest=/Users/myname/.local/share/virtualenvs/pycliapp-TkLJRwmc, clear=False, no_vcs_ignore=False, global=False)
+  seeder FromAppData(download=False, pip=bundle, setuptools=bundle, wheel=bundle, via=copy, app_data_dir=/Users/myname/Library/Application Support/virtualenv)
+    added seed packages: pip==21.0.1, setuptools==52.0.0, wheel==0.36.2
+  activators BashActivator,CShellActivator,FishActivator,PowerShellActivator,PythonActivator,XonshActivator
+
+✔ Successfully created virtual environment! 
+Virtualenv location: /Users/myname/.local/share/virtualenvs/pycliapp-TkLJRwmc
+Creating a Pipfile for this project...
+```
+
+
+このとき $SUBPROJディレクトリの下に [Pipfile](pycliapp/Pipfile) というファイルが生成されます。Pipfileの中をみると、AnacondaにインストールされていたPython3.xが選ばれて、それを使うように仮想環境が初期化されたことがわかります。
+
+
+pycliappプロジェクトのために作ったこのPython仮想環境がじっさいにどこのディレクトリに作られたのか？下記のコマンドで調べることができます。
+
+```
+$ cd $SUBPROJ
+$ pipenv --venv
+/Users/myname/.local/share/virtualenvs/pycliapp-TkLJRwmc
+```
+$SUBPROJディレクトリの下ではなくてぜんぜん別の場所に作られたことに注目しましょう。仮想環境を構成するファイル群はGitによるバージョン管理に含めるべきでありません。だから$SUBPROJディレクトリではない別の場所に仮想環境が作られるのは好都合です。
+
+あとでIntelliJ IDEAにPlatform SDKを追加するとき、`pipenv --env`が教えてくれたパスを指定することになります。
+
+#### 外部パッケージを追加する
+
+pycliappプロジェクトのなかであとでユニットテストをします。pytestを使います。pycliappプロジェクトのPython仮想環境のなかにpytestをインストールしましょう。
+
+```
+$ cd $SUBPROJ
+$ pipenv install pytest
+
+Installing pytest...
+Adding pytest to Pipfile's [packages]...
+✔ Installation Succeeded 
+Pipfile.lock not found, creating...
+Locking [dev-packages] dependencies...
+Locking [packages] dependencies...
+Building requirements...
+Resolving dependencies...
+✔ Success! 
+Updated Pipfile.lock (a834da)!
+Installing dependencies from Pipfile.lock (a834da)...
+  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 0/0 — 00:00:00
+To activate this project's virtualenv, run pipenv shell.
+Alternatively, run a command inside the virtualenv with pipenv run.
+```
+
+[Pipfile](pycliapp/Pipfile)のなかに `[package]`という記述ができて、そのなかに `pipenv` が自動的に追加されます。
+
+```
+[packages]
+pytest = "*"
+```
+
+また $SUBPROJディレクトリの下に `Pipfile.lock` ファイルが自動的に追加されます。
+
+```
+$ cd $SUBPROJ
+$ ls .
+Pipfile		Pipfile.lock	pycliapp.iml
+```
+
+#### 開発環境だけで使うパッケージを別枠で管理する
+
+アプリケーションが依存する通常の外部パッケージではなくて、開発環境でだけ使うパッケージを別枠として管理することができあす。たとえば [`autopep8`](https://githubja.com/hhatto/autopep8) をインストールしてみよう。
+
+```
+$ cd $SUBPROJ
+$ pipenv install --dev autopep8
+```
+
+するとPipfileが次のように更新される。
+
+```
+[dev-packages]
+autopep8 = "*"
+```
+
+#### 別マシンでPython仮想環境を再現する手順
+
+`Pipfile` と `Pipfile.lock`　には、`pipenv install`コマンドによって仮想環境に追加されたパッケージに関する詳細情報が記録されています。このふたつのファイルさえあればpycliappプロジェクトの仮想環境とまったく同じものを別のマシンで再現することが簡単にできます。だから`Pipfile`と`Pipfile.lock`ファイルをかならずGitレポジトリに追加して共有します。
+
+別マシンにこのレポジトリをcloneしたあとでPython仮想環境を再現するにはこうします。
+
+Pipfileを入力としてパッケージを再インストールするにはこうする。
+
+```
+$ cd $SUBPROJ
+$ pipenv install
+$ pipenv install --dev
+```
+
+`pipenv install`コマンドの場合、外部パッケージのバージョンがきっちり同じになるとはかぎらない。コマンドを実行した時点で最新のバージョンが選ばれてインストールされるかもしれません。
+
+Pipfile.lockを入力として外部パッケージの詳細なバージョンもきっちりあわせて環境を再現するにはこうする。
+
+```
+$ cd $SUBPROJ
+$ pipenv sync
+$ pipenv sync --dev
+```
+
+#### Pipfileにスクリプトを登録する
+
+
+#### 仮想環境に入ってシェルを実行する
+
+
+#### .envファイル
+
+#### Pipfileからrequirements.txtを生成する
+
+
+### IntelliJ IDEAでPythonプロジェクトに必要な設定をする
 
 #### IDEAにPlatform SDKを追加する
 
