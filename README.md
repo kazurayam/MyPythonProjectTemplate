@@ -69,41 +69,46 @@ $ tree $ROOTPROJ
 この記事から下記のことを習った。
 
 1. IDEAで$ROOTPROJディレクトリにNew Projectを作るとき **Empty Project** を選択する。
-1. IDEAで MultipleModulesProjectTemplate プロジェクトが開いたら、*File > Project Structure* でプロジェクトの構造を設定するダイアログを開く。メニューから *Project Settings > Modules* を選択する。Moduleを＋（追加）する。`pycliapp`モジュールを＋し、`pywebapp`モジュールを＋し、`pywebuitest`モジュールを＋する。これでサブプロジェクトが３つできる。SDKを登録するなどの作業はあとですればいい。
-   
->ここで「モジュール」という言葉を使ったがこれはIDEAのドキュメントが定義する意味での「モジュール」である。Python言語が定義する「モジュール」ではない。Python言語でモジュールとは `myapp.py` のように名前の末尾が `.py` のファイルに他ならないが、IDEAの用語法はまったく違う。
+1. IDEAで MultipleModulesProjectTemplate プロジェクトが開いたら、*File > Project Structure* でプロジェクトの構造を設定するダイアログを開く。メニューから *Project Settings > Modules* を選択する。Moduleを＋（追加）する。`pycliapp`モジュールを＋し、`pywebapp`モジュールを＋し、`pywebuitest`モジュールを＋する。これでサブプロジェクトが３つできる。
+
+>ここで「モジュール」という言葉を使ったがこれはIDEAが定義する用語としての「モジュール」である。Python言語が定義する「モジュール」ではない。混同しないよう気をつけよう。Python言語でモジュールとは `myapp.py` のように名前の末尾が `.py` のファイルのことだが、IDEAの用語法はまったく違う。
    
 3つのサブプロジェクトはそれぞれどういう内容のプロジェクトか？以下に概要を述べる。
 
-
-### pycliappサブプロジェクトの概要
+### pycliappの概要
 
 このサブプロジェクトではcommandlineで実行するapplicationをPython言語で開発します。
 
-1. macOSにPython処理系をインストールする。[pyenv](https://github.com/pyenv/pyenv) を使って [Anaconda](https://www.anaconda.com/) をインストールする。複数のバージョンのPython処理系をインストールして、切り替えられるようにする。
+1. 最初にmacOSにPython処理系をインストールする。[pyenv](https://github.com/pyenv/pyenv) を使って [Anaconda](https://www.anaconda.com/) をインストールする。複数のバージョンのPython処理系をインストールして、切り替えられるようにする。
 1. Pythonプロジェクトの標準的なディレクトリ構造を導入します
 1. このサブプロジェクトに専用のPython仮想環境を作ります。[pipenv](https://pypi.org/project/pipenv/) を利用します
 1. IntelliJ IDEAに適切な設定を加えます。この`pycliapp` プロジェクトの開発作業をIDEAのなかですべてできるようにします
 1. コンソールに *Hello, World!* と表示する素朴なアプリケーションをPython言語で作ります
 1. アプリケーションをユニットテストします。そのために[pytest](https://docs.pytest.org/en/stable/)を利用します
 
+詳細は[pyclipappの説明](#pycliappの説明)を参照のこと
 
-### pywebappサブプロジェクトの概要
+### pywebappの概要
 
 このサブプロジェクトでは WebサーバアプリケーションをPython言語で開発します。
 
 1. フレームワーク [Flask](https://palletsprojects.com/p/flask/) の [チュートリアル](https://flask.palletsprojects.com/en/1.1.x/tutorial/) を隅々まで写経して、ちゃんと動作するWebアプリケーションを作ります。
-1. 自作したPythonアプリケーションを [pip](https://pypi.org/project/pip/) でライブラリ化します。[PyPI](https://test.pypi.org/) に自分のためのアカウントを作って、PyPIにライブラリをアップロードして共有可能にします。
-1. 自作したPythonアプリケーションを組み込んだ[Docker](https://www.docker.com/) イメージを作り、Dockerコンテナを立ち上げて自作アプリを動かします。[Docker Hub](https://hub.docker.com/) に自分のためのアカウントを作って、Docker Hubにイメージをアップロードして共有可能にします。
-1. Flaskチュートリアルのサンプルコードが動くDockerコンテナを自分のPCで立ち上げて、ブラウザから http://localhost:80/ としてアクセスできるようにします。
+1. チュートリアルが提供するユニットテストのコードも写経します。Pythonによる上手なコーディング技法の例がテンコ盛りです。
+1. 自作したWebサーバアプリを [pip](https://pypi.org/project/pip/) でライブラリ化します。[PyPI](https://test.pypi.org/) にアップロードして共有可能にします。
+1. 自作したPythonアプリケーションを組み込んだ[Docker](https://www.docker.com/) イメージを作り、Dockerコンテナを立ち上げて自作アプリを動かします。[Docker Hub](https://hub.docker.com/) にイメージをアップロードして共有可能にします。
+1. Flaskチュートリアルのサンプルコードが動くDockerコンテナを自分のPCで立ち上げて、ブラウザで http://localhost:80/ にアクセスできるようにします。
 
-### pywebuitestサブプロジェクトの概要
+詳細は[pywebappの説明](#pywebappの説明)を参照のこと
+
+### pywebuitestの概要
 
 このサブプロジェクトでは Webサーバアプリケーションのユーザー・インターフェースをテストするためのコード一式を開発します。
 
 1. `pywebapp`サブプロジェクトが構築したWebアプリを対象として自動化テストを実行します。
 1. [Selenium](https://selenium-python.readthedocs.io/) を用いたPythonプログラムを開発してWebページをテストします。
 1. Page Object Model のデザインを用いてテストコードを設計します。
+
+詳細は[pywebuitestの説明](#pywebuitestの説明)を参照のこと
 
 ## 前提条件
 
@@ -112,13 +117,96 @@ $ tree $ROOTPROJ
 1. MacにGitをインストール済み。Git Hubに自分のアカウントを持っている。Gitの操作に熟達していると前提するのでGitに関する説明は省略する。
 1. MacでIntelliJ IDEAを統合開発環境として使う。IDEAのライセンスを持っていて、IDEAにPythonプラグインをインストール済み。
 
+--------------------------------------------------------
+
 ## pycliappサブプロジェクトの説明
 
-### Python処理系をOSにインストールする --- pyenvとAnacodna
+概要は[pycliappの概要](#pycliappの概要)を参照のこと。
 
-### pyclipappプロジェクトのためのディレクトリを作る
+### Python処理系をmacOSにインストールする --- pyenv と Anaconda
 
-### アプリケーションのコードを書く
+最初にmacOSにPython処理系をインストールした。この記事を参考にした。
+
+- [【2021年最新版】MacOSで複数のPython/Anacondaバージョンを使い分ける方法【データ分析】](https://www.simpletraveler.jp/2021/01/02/macos-pyenv-python-anaconda-versionmanagement/#pyenvMac)
+
+[pyenv](https://github.com/pyenv/pyenv) はさまざまあるPythonディストリビューションの中から望みのものをインストールしてくれるツール。複数のバージョンのPython処理系をインストールしておいて、切り替えて使うということを可能にしてくれる。
+
+Homebrewを使ってmacOSにpyenvをインストールする。
+
+```
+$ cd ~
+$ brew install pyenv
+```
+
+pyenvのパスをMacの.bash_profileに記述する。
+
+```
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+```
+
+>なおmacOS11ではデフォルトではzshを使うことになっているが、個人的好みでわたしはいまだにbashです。
+
+わたしはDeep Learningに興味があるので Anacondaをインストールしたい。どのバージョンのAnacondaがインストールできるかを調べるにはこうする。
+
+```
+$ pyenv install --list | grep anaconda
+  ...
+  anaconda3-4.4.0
+  ...
+  anaconda3-5.3.1
+  ...
+```
+
+たくさんリストアップされた候補の中からanaconda3-4.4.0 と anaconda3-5.3.1 の二つをインストールすることにした。
+
+```
+$ pyenv install anaconda3-4.4.0
+```
+
+そして
+
+```
+$ pyenv install anaconda3-5.3.1
+```
+
+>anaconndaディストリビューションは巨大だ。ダウンロードするのに時間がかかる。わたしの環境では10分ぐらいかかった。
+
+コマンドラインで`python`コマンドを投入した時にどのバージョンが使われるかを確認しよう。
+
+```
+$ pyenv versions
+* system (set by /Users/kazuakiurayama/.pyenv/version)
+  anaconda3-4.4.0
+  anaconda3-5.3.1
+```
+
+これを見ると `system` に `*` がついています。この状態で `python` コマンドを投入すると macOSにプレインストールされたPython2.7が選択がされてしまう。これではつまらない。`pyenv global バージョン`コマンドで設定を切り替えます。今からはanaconda3-4.4.0を使うことにしましょう。
+
+```
+$ pyenv global anaconda3-4.4.0
+:~
+$ pyenv versions
+  system
+* anaconda3-4.4.0 (set by /Users/kazuakiurayama/.pyenv/version)
+  anaconda3-5.3.1
+```
+
+これでanaconda3-4.4.0に切り替わりました。
+
+#### local
+
+なお特定のディレクトリにcdしてから `pyenv local anaconda3-5.3.1` とやればそのディレクトリのしたではglobalに指定したのと別のPython環境を使うことができます。
+
+#### アンインストール
+
+pyenvでインストールしたバージョンをアンインストールするにはこうします。
+
+```
+$ pyenv uninstall バージョン名
+```
+
 
 ### Python仮想環境を作る --- pipenv
 
@@ -130,23 +218,50 @@ $ tree $ROOTPROJ
 
 #### IDEAのプロジェクトにProject SDKを設定する
 
-### ユニットテストを書いて実行する
+### pycliappプロジェクトのディレクトリ構造を決める
+
+#### 記号　$ROOTPROJ
+
+本レポジトリの最上位ディレクトリを作ります。Git Hubからcloneしたなら当然ながらもう出来ているはず。例えば `~/github/MultipleModulesProjectTemplate` ディレクトリを作ったとしましょう。このディレクトリのことを以下の説明文で `$ROOTPROJ` と略記します。下記のようにしてBashシェルに変数 `ROOTPROJ` したと想像してもらってもいい。
+
+```
+$ cd ~/github/MultipleModulesProjectTemplate
+$ export ROOTPROJ=$(pwd)
+$ echo $ROOTPROJ
+/Users/myname/github/MultipleModulesProjectTemplate
+```
+
+$ROOTPROJの下に下記のようなディレクトリを作ります。
+
+
+
+#### srcディレクトリを作ったがうまくいかない件
+
+### アプリケーションのコードを書く
+
+### ユニットテストのコードを書く
+
+### ユニットテストを実行する --- pytest
 
 #### IDEAのプロジェクトの設定：ソースのディレクトリに印をつける
 
+
+---------------------------------------------------------
 ## pywebappサブプロジェクトの説明
 
-TODO
+概要は[pywebappの概要](#pywebappの概要)を参照のこと。
 
+---------------------------------------------------------
 ## pywebuitestサブプロジェクトの説明
 
+概要は[pywebuitestの概要](#pywebuitestの概要)を参照のこと。
 
-TODO
 
+---------------------------------------------------------
 ## 補足説明
 
 ### READMEに目次をつけた
 
-[GitHubの本プロジェクトのREADME](https://github.com/kazurayam/MultipleModulesProjectTemplate) に目次をつけた。下記のページを参考にした。
+[GitHubの本プロジェクトのREADME](https://github.com/kazurayam/MultipleModulesProjectTemplate) に目次(Table of Contents)をつけた。下記のページを参考にして実現した。
 
 - [[GitHub]README.mdの目次生成をAction「toc-generator」による自動化で楽しよう](https://dev.classmethod.jp/articles/auto-generate-toc-on-readme-by-actions/)
