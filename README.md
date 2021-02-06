@@ -20,14 +20,33 @@
 下記のように３つのサブプロジェクトを作った
 
 ```
-$ tree $PROJROOT
+$ tree $ROOTPROJ
 .
 ├── pycliapp
 ├── pywebapp
 └── pywebuitest
 ```
 
->なお上記で `$PROJROOT` という記号を用いている。これは本レポジトリをわたしのPCのローカルディスクにcloneして出来た
-ディレクトリ（たとえば `~/github/MultipleModulesProjectTemplate`）を表す変数です。文章を簡潔にするためこういう記号を使うことにしました。
+>なお上記で `$ROOTPROJ` という記号を用いていた。これは本レポジトリをわたしのPCのローカルディスクにcloneすることによって作られたディレクトリ（たとえば `~/github/MultipleModulesProjectTemplate`）を表します。
+
+3つのサブプロジェクトはどういう内容のプロジェクトか？
+
+### pycliapp
+
+このサブプロジェクトではcommandlineで実行するapplicationをPython言語で開発します。
+
+1. 実行されるとコンソールに *Hello, World!* と表示するだけの
+   シンプルなアプリケーションをPython言語で作ります
+1. 標準的なPythonプロジェクトのディレクトリ構造を導入します
+1. アプリケーションをユニットテストします。そのために[pytest](https://docs.pytest.org/en/stable/)を利用します
+1. このサブプロジェクトに専用のPython仮想環境を作ります。pipenvを利用します
+1. IntelliJ IDEAに適切な設定を加えて `pycliapp` プロジェクトの開発作業をIDEAのなかですべてできるようにします
+1. 自作したPythonアプリケーションをライブラリ化します。PyPIに自分のためのアカウントを作って、PyPIにライブラリをアップロードして共有可能にします。
+1. 自作したPythonアプリケーションを組み込んだDockerイメージを作り、Dockerコンテナを立ち上げて自作アプリを動かします。Docker Hubに自分のためのアカウントを作って、Docker Hubにイメージをアップロードして共有可能にします。
+
+### pywebapp
+
+### pywebuitest
+
 
 
