@@ -40,7 +40,6 @@
     - [IDEAにPlatform SDKを追加する](#idea%E3%81%ABplatform-sdk%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B)
     - [IDEAのプロジェクトにProject SDKを設定する](#idea%E3%81%AE%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%ABproject-sdk%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B)
   - [ユニットテストを実行する --- pytest](#%E3%83%A6%E3%83%8B%E3%83%83%E3%83%88%E3%83%86%E3%82%B9%E3%83%88%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B-----pytest)
-    - [IDEAのプロジェクトの設定：ソースのディレクトリに印をつける](#idea%E3%81%AE%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E8%A8%AD%E5%AE%9A%E3%82%BD%E3%83%BC%E3%82%B9%E3%81%AE%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E3%81%AB%E5%8D%B0%E3%82%92%E3%81%A4%E3%81%91%E3%82%8B)
 - [pywebappの説明](#pywebapp%E3%81%AE%E8%AA%AC%E6%98%8E)
 - [pywebuitestの説明](#pywebuitest%E3%81%AE%E8%AA%AC%E6%98%8E)
 - [補足説明](#%E8%A3%9C%E8%B6%B3%E8%AA%AC%E6%98%8E)
