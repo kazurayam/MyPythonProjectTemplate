@@ -41,10 +41,17 @@
 
 ## これは何か
 
-Pythonはプログラミング言語としてはとても習得しやすい言語だ。 ところがPython言語でプログラムを自作しようと仕事し始めたとたん、さまざまな疑問に遭遇した。Python処理系それ自体をどうインストールするか、特に複数バージョンのPythonを使い分けるにはどうするか、プロジェクトごとさまざまな外部パッケージをどう管理するか、自作したコードをどうやってライブラリ化するか、自作したコードを本番マシンでどうやって配備するか、といった問題だ。開発環境をどう作るか、開発ツールをどう使うか。こうしたノウハウを習得するには努力がいる。
+Pythonはプログラミング言語としてはとても習得しやすい言語だ。 ところがPython言語でプログラムを自作しようと仕事し始めたとたん、さまざまな疑問に遭遇した。Python処理系それ自体をどうインストールするか、特に複数バージョンのPythonを使い分けるにはどうするか、プロジェクトごとさまざまな外部パッケージをどう管理するか、自作したコードをどうやってライブラリ化するか、自作したコードを本番マシンでどうやって配備するか、といった問題だ。開発環境をどう作るか、開発ツールをどう使うか。こうした問題はすでに先人の手で解決済みであってネットを調べれば答えが見つかる。しかしこうしたノウハウを習得するのは容易ではなかった。
 
-Pythonによる開発環境をいかに構築し開発ツールを使うかのお手本となるコード一式を仕込んで、このレポジトリに格納しGit Hubにアップしようと思う。今後自分がさまざまな仕事をPythonで解決しようとするときGit HubのTemplate Repositoryを使って環境の構築をさっさとやれるように準備しよう。
+Pythonによる開発環境をいかに構築し開発ツールを使うかのお手本となるコード一式を仕込んで、このレポジトリに格納しGit Hubにアップしようと思う。今後自分がさまざまな仕事をPythonで解決しようとするときGit HubのTemplate Repository機能を使ってさっさと環境を構築できるように準備しよう。
 
+
+## 前提条件
+
+1. 使うマシンはMac Book Air、OSはmaxOS 11.1 Big Sur
+1. MacにHomebrewをインストール済み、説明は省略する
+1. MacにGitをインストール済み。Git Hubに自分のアカウントを持っている。Gitの操作に熟達していると前提するのでGitに関する説明は省略する。
+1. MacでIntelliJ IDEAを統合開発環境として使う。IDEAのライセンスを持っていて、IDEAにPythonプラグインをインストール済み。
 
 ## 複数モジュールから成るプロジェクトを作った
 
@@ -114,12 +121,16 @@ $ tree $ROOTPROJ
 
 詳細は[pywebuitestの説明](#pywebuitestの説明)を参照のこと
 
-## 前提条件
+### 記号　$ROOTPROJ の定義
 
-1. 使うマシンはMac Book Air、OSはmaxOS 11.1 Big Sur
-1. MacにHomebrewをインストール済み、説明は省略する
-1. MacにGitをインストール済み。Git Hubに自分のアカウントを持っている。Gitの操作に熟達していると前提するのでGitに関する説明は省略する。
-1. MacでIntelliJ IDEAを統合開発環境として使う。IDEAのライセンスを持っていて、IDEAにPythonプラグインをインストール済み。
+本レポジトリの最上位ディレクトリを作ります。Git Hubからcloneしたなら当然ながらもう出来ているはず。例えば `~/github/MultipleModulesProjectTemplate` ディレクトリを作ったとしましょう。このディレクトリのことを以下の説明文で `$ROOTPROJ` と略記します。下記のようにしてBashシェルに変数 `ROOTPROJ` したと想像してもらってもいい。
+
+```
+$ cd ~/github/MultipleModulesProjectTemplate
+$ export ROOTPROJ=$(pwd)
+$ echo $ROOTPROJ
+/Users/myname/github/MultipleModulesProjectTemplate
+```
 
 --------------------------------------------------------
 
@@ -127,7 +138,9 @@ $ tree $ROOTPROJ
 
 概要は[pycliappの概要](#pycliappの概要)を参照のこと。
 
-### Python処理系をmacOSにインストールする --- pyenv と Anaconda
+### Python処理系をmacOSにインストールする
+
+#### pyenvでAnacondaをインストールする
 
 最初にmacOSにPython処理系をインストールした。この記事を参考にした。
 
@@ -199,18 +212,21 @@ $ pyenv versions
   anaconda3-5.3.1
 ```
 
-#### local
+#### globalとlocal
 
 なお特定のディレクトリにcdしてから `pyenv local anaconda3-5.3.1` とやればそのディレクトリのしたではglobalに指定したのではない別のPython環境を使うことができます。
 
 #### アンインストール
 
-pyenvでインストールしたバージョンをアンインストールするにはこうします。
+pyenvでインストールしたバージョンをOSからアンインストールするにはこうします。
 
 ```
 $ pyenv uninstall バージョン名
 ```
 
+### 記号 $SUBPROJ　の定義
+
+TODO
 
 ### pycliappサブプロジェクトのためにPython仮想環境を作る --- pipenv
 
@@ -373,18 +389,10 @@ $ pipenv sync --dev
 
 ### pycliappプロジェクトのディレクトリ構造を決める
 
-#### 記号　$ROOTPROJ
 
-本レポジトリの最上位ディレクトリを作ります。Git Hubからcloneしたなら当然ながらもう出来ているはず。例えば `~/github/MultipleModulesProjectTemplate` ディレクトリを作ったとしましょう。このディレクトリのことを以下の説明文で `$ROOTPROJ` と略記します。下記のようにしてBashシェルに変数 `ROOTPROJ` したと想像してもらってもいい。
+#### 記号 $SUBPROJ
 
-```
-$ cd ~/github/MultipleModulesProjectTemplate
-$ export ROOTPROJ=$(pwd)
-$ echo $ROOTPROJ
-/Users/myname/github/MultipleModulesProjectTemplate
-```
-
-$ROOTPROJの下に下記のようなディレクトリを作ります。
+$SUBPROJの下に下記のようなディレクトリを作ります。
 
 
 
