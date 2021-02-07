@@ -518,7 +518,11 @@ $ tree .
 
 なぜ？ --- わたしはJavaプログラミングの経歴が長い。Mavenや[Gradleの流儀](https://docs.gradle.org/current/userguide/organizing_gradle_projects.html#sec:separate_language_source_files) どおりに、プロジェクトの最上位ディレクトリの下に `src` があるというディレクトリ構造に馴染んでいた。だから `src` が無いのが気に入らなかったからです。 
 
-ところがPythonプロジェクトの直下に `src` ディレクトリを作ろうとしてたくさんの問題に遭遇しました。どんな問題が起きたか？ たくさんあるのですが、ひとつだけ、わたしがついに回避策を見つけられなかった問題をメモしておきます。後述のとおり、わたしは pywebappサブプロジェクトをつくり、FlaskフレームワークをベースとするWebアプリケーション flaskr を作りました（正しくはTutorialを写経しました）。そしてWebサーバ "Waitress" をコマンドラインで起動してそのなかでflaskrを動かそうとした。flaskrのPythonソースコードが srcディレクトリの下にあることをどうにかしてWaitressに教える方法がわからなかった。https://docs.pylonsproject.org/projects/waitress/en/stable/runner.html をみると "As of 0.8.6, the current directory is automatically included on sys.path."と書いてあった。つまりアプリケーションのパッケージがカレントディレクトリにあれば問題は起きないのに、srcディレクトリがあるせいで問題が起きた。お手上げでした。 
+ところがPythonプロジェクトの直下に `src` ディレクトリを作ろうとしてたくさんの問題に遭遇しました。どんな問題が起きたか？ たくさんあるのですが、ふたつメモしておきましょう。
+
+第一に pytest。[`pycliapp/tests/test_greeting.py`](pycliapp/tests/test_greeting.py)の一行目に `from mypkg import greeting` と書きました。これはどうしても必要な記述です。ところが `src` ディレクトリがあるとこの`from`がエラーになってしまった。衆知のとおりPython処理系は外部パッケージをみつけるとき [`sys.path`](https://qiita.com/fumitoh/items/7999ec8aac5f63c9fa18) 変数に列挙されたディレクトリ群のなかを探索します。sys.pathの設定が不備だと`from`がエラーになる。さて、どうしよう。いろいろ調べてひねり技をこらした。ドキュメント [pytest import mechanisms and sys.path/PYTHONPATH](https://docs.pytest.org/en/stable/pythonpath.html) に従って `conftest.py` を作った。また IDEAのModulesの設定ダイアログで srcディレクトリに *Sources* のマークをつけた。などなど。あとでわかったのだが、`src`ディレクトリ無しに`mypkg`をプロジェクト直下におけばこんなひねり技は不要。なぜなら `sys.path` にはカレントディレクトリが含まれるから。
+
+第二に Waitreass。後述のとおり、わたしは pywebappサブプロジェクトをつくり、FlaskフレームワークをベースとするWebアプリケーション flaskr を作りました（正しくはTutorialのサンプルコードを写経しました）。そしてWebサーバ "Waitress" をコマンドラインで起動してそのなかでflaskrを動かそうとした。flaskr のPythonソースコードが srcディレクトリの下にあることをどうにかしてWaitressに教える必要があったが、その方法がわからなかった。https://docs.pylonsproject.org/projects/waitress/en/stable/runner.html をみると "As of 0.8.6, the current directory is automatically included on sys.path."と書いてあった。つまりアプリケーションのパッケージがカレントディレクトリにあれば問題は起きない。しかしsrcディレクトリがあるせいで問題が起きた。どうやらWaitressはPythonアプリがカレントディレクトリにあるという標準的なディレクトリ構造を前提していて、`src`ディレクトリが挟まっているイレギュラーなディレクトリ構造を想定していない。手詰まりになった。
 
 結論：　Python世界ではプロジェクトの最上位ディレクトリの直下にアプリケーションのパッケージとしてのディレクトリ（たとえば `mypkg`）を配置するディレクトリ構造が王道です。それ以外の形を模索しても無駄です。やめておきましょう。
 
@@ -570,9 +574,26 @@ OKしましょう。これでIDEAの設定はできました。
 
 ### ユニットテストを実行する --- pytest
 
+ユニットテストを実行する準備が整いました。pytestを起動するにはこうする。
 
-#### IDEAのプロジェクトの設定：ソースのディレクトリに印をつける
+```
+$ cd $SUBPROJ
+$ pipenv run pytest
+```
 
+テストが動いてpassしました。
+
+```
+Loading .env environment variables...
+============================= test session starts ==============================
+platform darwin -- Python 3.8.5, pytest-6.2.2, py-1.10.0, pluggy-0.13.1
+rootdir: /Users/kazuakiurayama/github/MyPythonProjectTemplate/pycliapp
+collected 1 item                                                               
+
+tests/test_greeting.py .                                                 [100%]
+
+============================== 1 passed in 0.01s ===============================
+```
 
 ---------------------------------------------------------
 ## pywebappの説明
