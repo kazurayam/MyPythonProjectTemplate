@@ -6,9 +6,12 @@ name = "pypi"
 [packages]
 flask = "*"
 pytest = "*"
+python-dotenv = "*"
+waitress = "*"
 
 [dev-packages]
 coverage = "*"
+wheel = "*"
 
 [requires]
 python_version = "3.8"
