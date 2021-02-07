@@ -236,7 +236,7 @@ pyenvでインストールしたバージョンをOSからアンインストー�
 $ pyenv uninstall バージョン名
 ```
 
-### 記号SUBPROJの定義
+### 記号 SUBPROJ の定義
 
 TODO
 
@@ -509,7 +509,7 @@ $ tree .
 .
 ├── src
 │   └── mypkg
-│       ├── __init__.py
+│       ├── __init__.py*__*
 │       └── greeting.py
 └── tests
  ├── __init__.py
@@ -546,6 +546,13 @@ IDEAを起動しMyPythonProjectTemplateプロジェクトを開きます。*File
 
 ![12](docs/images/12_AddPythonSDK.png)
 
+この *Add Python Interpreter* ダイアログのなかに
+
+- New Environment
+- Existing Environment
+
+のふたつの選択肢があることに注意せよ。New Environmentを選ぶとIDEAにたいしてPython仮想環境を新規に作れと要求することになる。しかしわれわれはコマンドラインで pipenv コマンドを用いて pycliappプロジェクト専用を仮想環境をすでに作成ずみだ。だからわれわれは Existing Evironmentのほうを選択すべきだ。
+
 pycliappプロジェクト専用に作ったPython仮想環境をPlatform SDKとしてIDEAに追加登録したいのですが、そのためにはその仮想環境のパスを調べておく必要があります。次のコマンドで調べられます。
 
 ```
@@ -556,7 +563,7 @@ $ pipenv --venv
 /Users/myname/.local/share/virtualenvs/pycliapp-32imfJAR
 ```
 
-*Add Python Interpreter* ダイアログのなか *Base Interpreter* のところに、Python仮想環境のディレクトリのなかにある pythonのバイナリのパスを入力します。
+*Existing Environment* の *Interpreter* に、Python仮想環境のディレクトリのなかにある pythonのバイナリのパスを入力します。
 
 ![13](docs/images/13_AddPythonInterpreter.png)
 
@@ -595,10 +602,212 @@ tests/test_greeting.py .                                                 [100%]
 ============================== 1 passed in 0.01s ===============================
 ```
 
+以上で pycliappプロジェクトが完成しました。
+
 ---------------------------------------------------------
 ## pywebappの説明
 
 概要は[pywebappの概要](#pywebappの概要)を参照のこと。
+
+pywebappプロジェクトはWebサーバアプリケーションを開発します。
+
+Python処理系のインストール、プロジェクトのディレクトリ構造の決定、仮想環境の作成、IntelliJ IDEAの設定、pytestによるユニットテスト --- これらの手順は前述の pycliapp と同様です。
+
+pipで自作Pythonコードをライブラリ化する手順については下記の記事を参考にしました。
+
+- [あとで後悔しないPythonのディレクトリ構成をつくってみる](https://qiita.com/kobori_akira/items/aa42790354654debb655)
+
+### 記号 SUBPROJ の定義
+
+```
+$ cd ~/github/MyPythonProjectTemplate/pywebapp
+$ export SUBPROJ=$(pwd)
+```
+
+### pywebappプロジェクトのためにPython仮想環境をつくる
+
+pywebapp/Pipfileが無い状態ではじめて仮想環境を作るならこうする
+
+```
+$ cd $SUBPROJ
+$ pipenv --python 3
+```
+
+GitレポジトリからPipfileを取り出してあったなら、Pipfileから仮想環境を再現することができる。
+
+```
+$ cd $SUBPROJ
+$ pipenv install
+$ pipenv install --dev
+```
+
+### 仮想環境にFlaskとpytestをインストールする
+
+```
+$ cd $SUBPROJ
+$ pipenv install flask pytest
+```
+
+### Flask Tutorialを写経する
+
+Flaskの公式ドキュメントのチュートリアルのサンプルコードをそのまま写経しました。
+
+- [Tutorial](https://flask.palletsprojects.com/en/1.1.x/tutorial/)
+
+このコードについてわたしが付け加えることはありません。ユニットテストのサンプルコードがいい。decoratorなどPython言語の玄人っぽい書き方が勉強になります。
+
+pywebappプロジェクトでユニットテストを実行します。
+
+```
+$ cd $SUBPROJ
+$ pipenv run pytest
+```
+
+パスしなかったらひとつひとつ間違いを修正しましょう。 パスしたらこんなふうになります。
+
+```
+============================= test session starts ==============================
+platform darwin -- Python 3.8.5, pytest-6.2.2, py-1.10.0, pluggy-0.13.1
+rootdir: /Users/kazuakiurayama/github/MyPythonProjectTemplate/pywebapp
+collected 24 items
+
+tests/test_auth.py ........                                              [ 33%]
+tests/test_blog.py ............                                          [ 83%]
+tests/test_db.py ..                                                      [ 91%]
+tests/test_factory.py ..                                                 [100%]
+
+============================== 24 passed in 1.06s ==============================
+```
+
+
+
+### .flaskenvファイルに環境変数の設定を書く
+
+Flaskを起動するとき環境変数 `FLASK_APP` ほかを指定しなければならない。コマンドラインの引数として指定することもできるが面倒だ。[https://www.pgen.info/archives/1691](https://www.pgen.info/archives/1691)によれば、`.flaskenv` ファイルを作ってそこに環境変数の定義を書けばいい。
+
+- [pywebapp/.flaskenv](pywebapp/.flaskenv)
+
+python-dotenvが必要なのでインストールする。
+
+```
+$ cd $SUBPROJ
+$ pipenv install python-dotenv
+```
+
+### Pipfileにスクリプトを書いて起動を簡単にする
+
+[Pipfile](pywebapp/Pipfile) にflaskrunという名前のスクリプトを書いた。Flaskを起動するコマンドだ。
+
+```
+$ cd $SUBPROJ
+$ pipenv run flaskrun
+```
+
+もしもコマンドライン引数を追加しなければならなくなったとき、スクリプトの
+なかに書ける。便利だ。
+
+### ユニットテストのカバレージを調べる
+
+ユニットのテストのカバレージを調べよう。coverageをインストールする。
+
+```
+$ cd $SUBPROJ
+$ pipenv install --dev coverage
+```
+
+coverageを実行する
+
+```
+$ cd $SUBPROJ
+$ pipenv run coverage run -m pytest
+
+```
+
+coverageのレポートをみる
+
+```
+$ cd $SUBPROJ
+$ pipenv run coverage report
+Name                                                                                                                                    Stmts   Miss  Cover
+-------------------------------------------
+flaskr/__init__.py                                                                                                                         23      0   100%
+flaskr/auth.py                                                                                                                             59      0   100%
+flaskr/blog.py                                                                                                                             58      0   100%
+flaskr/db.py                                                                                                                               25      0   100%
+tests/__init__.py                                                                                                                           0      0   100%
+tests/conftest.py                                                                                                                          34      0   100%
+tests/test_auth.py                                                                                                                         30      0   100%
+tests/test_blog.py                                                                                                                         59      0   100%
+tests/test_db.py                                                                                                                           19      0   100%
+tests/test_factory.py                                                                                                                       7      0   100%
+-------------------------------------------
+TOTAL                                      
+```
+
+coverageにHTML形式のレポートを生成させるにはこうする。
+
+```
+$ cd $SUBPROJ
+$ pipenv run coverage html
+
+```
+
+### 自作のPythonコードをライブラリ化してPyPIにアップする
+
+#### setup.pyを書く
+
+
+自作のPythonコードをライブラリ化するに [pywebapp/setup.py](pywebapp/setup.py) を書く。
+
+PyPIにファイルをアップしたときに他の人がつくったものと重複しないユニークな名前をライブラリに与える必要がある。`flaskr`だけではきっとかぶってしまう。そこで`flaskr-kazurayam`という名前にした。これならかぶらない。
+```
+setup(
+    name="flaskr-kazurayam",
+```
+
+#### requirements.txt を生成する
+
+pipコマンドがライブラリを作成するときそれがどの外部ライブラリに依存するかという情報を `requirements.txt` ファイルから読み取る。われわれはpipenvを使って外部ライブラリをインストールしたから、`Pipfile`から`requirements.txt`を自動生成することができる。こうする。
+
+```
+$ cd $SUBPROJ
+$ pipenv run pip freeze > requirements.txt
+```
+
+#### MANIFET.inファイルを書く
+
+ライブラリが依存するrequirements.txtの場所をpipに教えるために `MANIFEST.in` ファイルを準備する必要がある。さらにflaskrはSQL文やTemplateを含める必要があった。Tutorialが示してくれたMANIFEST.inを写経した。
+
+- [pywebapp/MANIFEST.in](pywebapp/MANIFEST.in)
+
+Pythonライブラリを作る第一のやり方は`python setup.py sdist` だ。sdistとはsouce distributionのこと。その名の通りPythonのソースコードを配布する。
+
+```
+$ cd $SUBPROJ
+$ pipenv run python setup.py sdist
+```
+
+sdistの場合、利用者が pip install xxxxxx を実行すると利用者側でsetup.pyの記述に基づいたビルド処理が実行される。このビルド処理が失敗しがちだ。理由はさまざまある。たとえばPython言語ではなくC言語で記述されたコードがライブラリに含まれていたりするとWindowsではきっと失敗する。ソースコードを配布するのではなくビルド済みのパッケージを配布するやり方があればそっちのほうが良い。そこで利用されるのが [wheel](https://pythonwheels.com/)。
+
+pywebappでもwheelを利用しよう。
+
+まずwheelをインストールする。
+
+```
+$ cd $SUBPROJ
+$ pipenv install --dev wheel
+```
+
+wheelをインストールすると `bdist_shell` が使えるようになる。`sdist`ではなくこっちでライブラリ化する。
+
+```
+$ cd $SUBPROJ
+$ pipenv run python setup.py bdist_wheel
+```
+
+すると
+
+できたPythonコード一式をpipでライブラリ化します。ライブラリのファイルを [PyPI](https://test.pypi.org/) にアップロードして共有可能します。さらにDockerイメージを作って[Docker Hub](https://hub.docker.com/) にアップロードして共有可能にします。Docker http://localhost:80/ でアクセス
 
 ---------------------------------------------------------
 ## pywebuitestの説明
@@ -607,7 +816,7 @@ tests/test_greeting.py .                                                 [100%]
 
 
 ---------------------------------------------------------
-## 補足説明
+## 補足
 
 ### READMEに目次をつけた
 
