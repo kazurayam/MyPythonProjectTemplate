@@ -1,4 +1,4 @@
-# Mutiple Modules Project Template
+# My Python Project Template
 
 - @author kazurayam
 - @date Feb 2021
@@ -78,7 +78,7 @@ $ tree $ROOTPROJ
 └── pywebuitest
 ```
 
->なお上記で `$ROOTPROJ` という記号を用いていた。これは本レポジトリをわたしのPCのローカルディスクにcloneすることによって作られたディレクトリ（たとえば `~/github/MultipleModulesProjectTemplate`）を表します。
+>なお上記で `ROOTPROJ` という記号を用いていた。これは本レポジトリをわたしのPCのローカルディスクにcloneすることによって作られたディレクトリ（たとえば `~/github/MultipleModulesProjectTemplate`）を表します。
 
 >サブプロジェクトの数は３つとかぎらない、Python言語だけとはかぎらない。サブプロジェクトをJavaやNodeで作ることもあるだろう。
 
@@ -108,7 +108,7 @@ $ tree $ROOTPROJ
 1. コンソールに *Hello, World!* と表示する素朴なアプリケーションをPython言語で作ります
 1. アプリケーションをユニットテストします。そのために[pytest](https://docs.pytest.org/en/stable/)を利用します
 
-詳細は[pyclipappの説明](#pycliappの説明)を参照のこと
+詳細は[pycliappの説明](#pycliappの説明)を参照のこと
 
 ### pywebappの概要
 
@@ -132,7 +132,7 @@ $ tree $ROOTPROJ
 
 詳細は[pywebuitestの説明](#pywebuitestの説明)を参照のこと
 
-### 記号　$ROOTPROJ の定義
+### 記号ROOTPROJの定義
 
 本レポジトリの最上位ディレクトリを作ります。Git Hubからcloneしたなら当然ながらもう出来ているはず。例えば `~/github/MultipleModulesProjectTemplate` ディレクトリを作ったとしましょう。このディレクトリのことを以下の説明文で `$ROOTPROJ` と略記します。下記のようにしてBashシェルに変数 `ROOTPROJ` したと想像してもらってもいい。
 
@@ -145,15 +145,17 @@ $ echo $ROOTPROJ
 
 --------------------------------------------------------
 
-## pycliappサブプロジェクトの説明
+## pycliappの説明
 
 概要は[pycliappの概要](#pycliappの概要)を参照のこと。
 
 ### Python処理系をmacOSにインストールする
 
+なにはともあれmacOSにPython処理系をインストールした。
+
 #### pyenvでAnacondaをインストールする
 
-最初にmacOSにPython処理系をインストールした。この記事を参考にした。
+この記事を参考にした。
 
 - [【2021年最新版】MacOSで複数のPython/Anacondaバージョンを使い分ける方法【データ分析】](https://www.simpletraveler.jp/2021/01/02/macos-pyenv-python-anaconda-versionmanagement/#pyenvMac)
 
@@ -235,7 +237,7 @@ pyenvでインストールしたバージョンをOSからアンインストー�
 $ pyenv uninstall バージョン名
 ```
 
-### 記号 $SUBPROJ　の定義
+### 記号SUBPROJの定義
 
 TODO
 
@@ -383,35 +385,156 @@ $ pipenv sync --dev
 
 #### Pipfileにスクリプトを登録する
 
+Pipefileの `[scripts]` に短いシェルスクリプトを記述し名前をつけて登録することができます。たとえば プロダクトのmainスクリプトを起動する、ユニットテストを実行する、Pythonコードを生成する、Lintツールを実行する、など頻繁に実行するコマンドを登録しておけば便利です。
+
+```
+[scripts]
+test = "python -m pytest"
+format = "autopep8 -ivr ."
+```
+
+testスクリプトを実行するにはこうします。
+
+```
+$ cd $SUBPROJ
+$ pyenv run test
+```
 
 #### 仮想環境に入ってシェルを実行する
 
+pycliappプロジェクト専用のPython仮想環境に入ってコマンドライン操作をするには `pipenv shell` を使う。
 
-#### .envファイル
+```
+$ cd $SUBPROJ
+$ pipenv shell
+Launching subshell in virtual environment...
+ . /Users/myname/.local/share/virtualenvs/pycliapp-32imfJAR/bin/activate
+:~/github/MyPythonProjectTemplate/pycliapp (master *)
+$  . /Users/myname/.local/share/virtualenvs/pycliapp-32imfJAR/bin/activate
+(pycliapp) :~/github/MyPythonProjectTemplate/pycliapp (master *)
+```
+仮想環境のシェルから出るには `exit` する。
+```
+$ exit
+```
+
+#### .envファイルの自動読み込み
+
+プロジェクトに [`.env`](pycliapp/.env) ファイルを作っておくと `pipenv run` や `pipenv shell` を実行するときに自動で読み込んでくれる。認証情報などプログラムのソースにハードコードするにはまずい情報を登録しておくのに便利。ただし `.gitignore` に `.env` を書いてレポジトリから除外するのを忘れずに。
+
+pycliapp/.envの例
+```
+username=John Doe
+password=ThisIsNotAPassword
+DEBUG=1
+```
+
+こうすると環境変数 `DEBUG` ができて値に `1` が設定されます。確認してみよう。
+
+```
+$ cd $SUBPROJ
+$ pipenv run python
+Loading .env environment variables...
+Python 3.8.5 (v3.8.5:580fbb018f, Jul 20 2020, 12:11:27) 
+[Clang 6.0 (clang-600.0.57)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import os
+>>> os.environ['DEBUG']
+'1'
+
+```
 
 #### Pipfileからrequirements.txtを生成する
 
+わたしは pipenvを使って外部パッケージをインストールしました。その詳細は Pipfile や Pipfile.lock に保存されています。ところであとでpywebappサブプロジェクトで自作のPythonコードをライブラリにしますが、そこで [`requirements.txt`](pycliapp/requirements.txt) が必要になります。requirements.txtは外部依存パッケージを列挙したもの。わざわざ requirements.txt を二度手書きしたくない。そこでPipfileに列挙された情報を変換してrequirements.txtに書き出すことができます。
 
-### IntelliJ IDEAでPythonプロジェクトに必要な設定をする
+```
+$ cd $SUBPROJ
+$ pipenv run pip freeze > requirements.txt
+```
+
+このテクニックを使えば外部依存ライブラリの管理をPipenvに一元化し、requirements.txtファイルを手書きするのを避けつつ、pipコマンドでライブラリ化することができます。
+
+### pycliappプロジェクトのディレクトリ構造を決める
+
+では アプリケーションのPythonコードを書こう。ユニットテストするためのPythonコードも書こう。そのためにプロジェクトのディレクトリ構造を決めた。
+
+```
+$ cd $SUBPROJ
+$ tree .
+.
+├── mypkg
+│   ├── __init__.py
+│   └── greeting.py
+└── tests
+    ├── __init__.py
+    └── test_greeting.py
+```
+
+pycliappディレクトリの直下に `mypkg` ディレクトリを作りました。その下に `__init__.py` ファイルを作った。`__init__.py` を配置したことで `mypkg` がPython言語の言葉遣いでいうところの「パッケージ」になります。`mypkg`ディレクトリの下に `greenting.py` ファイルを作りました。このPythonファイルのなかにアプリケーションのコードを記述していきます。これで `mypkg`パッケージのなかに `greeting` モジュールを作ったことになります。
+
+またpycliappディレクトリの直下に `tests` ディレクトリを作りました。`tests`ディレクトリの下に `test_greeting.py` ファイルを作りました。ここにユニットテストをするためのコードを記述していきます。
+
+```
+from mypkg import greeting
+```
+
+### アプリケーションのコードを書く
+
+[pycliapp/mypkg/greeting.py](pycliapp/mypkg/greeting.py) のコードは下記のようなシンプルなものです。
+
+```
+def hello(name):
+    return f"Hello, {name}!"
+```
+
+### ユニットテストのコードを書く
+
+[pycliapp/tests/test_greeting.py](pycliapp/tests/test_greeting.py) のコードは下記のとおりです。
+
+```
+from mypkg import greeting
+
+def test_hello():
+    assert greeting.hello('World') == 'Hello, World!'
+```
+
+### srcディレクトリを作ったがうまくいかなかった
+
+ここですこし脇道にそれます。プロジェクトのディレクトリ構造を決めるにあたってわたしが迷って困ったという話をします。
+
+わたしは pycliappディレクトリの下に `src` ディレクトリを配置し、`src`の下にPythonパッケージとしてのディレクトリ `mypkg` を配置したいと考えました。
+
+```
+$ tree .
+.
+├── src
+│   └── mypkg
+│       ├── __init__.py
+│       └── greeting.py
+└── tests
+ ├── __init__.py
+ └── test_greeting.py
+```
+
+なぜ？ --- わたしはJavaプログラミングの経歴が長い。Mavenや[Gradleの流儀](https://docs.gradle.org/current/userguide/organizing_gradle_projects.html#sec:separate_language_source_files) どおりに、プロジェクトの最上位ディレクトリの下に `src` があるというディレクトリ構造に馴染んでいた。だから `src` が無いのが気に入らなかったからです。 
+
+ところがPythonプロジェクトの直下に `src` ディレクトリを作ろうとしてたくさんの問題に遭遇しました。どんな問題が起きたか？ たくさんあるのですが、ひとつだけ、わたしがついに回避策を見つけられなかった問題をメモしておきます。後述のとおり、わたしは pywebappサブプロジェクトをつくり、FlaskフレームワークをベースとするWebアプリケーション flaskr を作りました（正しくはTutorialを写経しました）。そしてWebサーバ "Waitress" をコマンドラインで起動してそのなかでflaskrを動かそうとした。flaskrのPythonソースコードが srcディレクトリの下にあることをどうにかしてWaitressに教える方法がわからなかった。https://docs.pylonsproject.org/projects/waitress/en/stable/runner.html をみると "As of 0.8.6, the current directory is automatically included on sys.path."と書いてあった。つまりアプリケーションのパッケージがカレントディレクトリにあれば問題は起きないのに、srcディレクトリがあるせいで問題が起きた。お手上げでした。 
+
+結論：　Python世界ではプロジェクトの最上位ディレクトリの直下にアプリケーションのパッケージとしてのディレクトリ（たとえば `mypkg`）を配置するディレクトリ構造が王道です。それ以外の形を模索するのは無駄な努力です。やめておきましょう。
+
+
+### IntelliJ IDEAのなかのPythonプロジェクトに必要な設定をする
+
+`test_greeting.py` のなかのPythonコードは greetingモジュールを参照します。そのため`test_greeting.py`の冒頭には下記のような import 文を書く必要があります。
+
+このレポジトリをIntelliJ IDEAでEmpty Projectとして作り、そのなかに包含される形で pycliapp をはじめとする３つのディレクトリをつくりました。IDEA用語でいえば「モジュール」を３つ作りました。そのあとコマンドラインで pipenvコマンドを実行して pycliappモジュール専用のPython仮想環境をつくりpytestなど外部依存ライブラリをインストールしました。ところがまだIDEAにはまだなんの設定も加えていません。だからIDEAを起動して本プロジェクトを開いて
+
 
 #### IDEAにPlatform SDKを追加する
 
 #### IDEAのプロジェクトにProject SDKを設定する
 
-### pycliappプロジェクトのディレクトリ構造を決める
-
-
-#### 記号 $SUBPROJ
-
-$SUBPROJの下に下記のようなディレクトリを作ります。
-
-
-
-#### srcディレクトリを作ったがうまくいかない件
-
-### アプリケーションのコードを書く
-
-### ユニットテストのコードを書く
 
 ### ユニットテストを実行する --- pytest
 
@@ -419,12 +542,12 @@ $SUBPROJの下に下記のようなディレクトリを作ります。
 
 
 ---------------------------------------------------------
-## pywebappサブプロジェクトの説明
+## pywebappの説明
 
 概要は[pywebappの概要](#pywebappの概要)を参照のこと。
 
 ---------------------------------------------------------
-## pywebuitestサブプロジェクトの説明
+## pywebuitestの説明
 
 概要は[pywebuitestの概要](#pywebuitestの概要)を参照のこと。
 

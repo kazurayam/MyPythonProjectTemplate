@@ -9,5 +9,9 @@ pytest = "*"
 [dev-packages]
 autopep8 = "*"
 
+[scripts]
+test = "python -m pytest"
+format = "autopep8 -ivr ."
+
 [requires]
 python_version = "3.8"
