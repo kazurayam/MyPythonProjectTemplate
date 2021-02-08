@@ -68,9 +68,9 @@
 
 ## これは何か
 
-Pythonはとても習得しやすいプログラミング言語だとわたしは思う。ところが自作に取り組み始めたら開発ツールの使い方がわからなくて迷った。Python処理系それ自体をどうインストールするか、特に複数バージョンのPythonを使い分けるにはどうするか、プロジェクトごとさまざまな外部パッケージをどう管理するか、自作したコードをどうやってライブラリ化するか、自作したコードを本番マシンでどうやって配備するか。こうした問題はすでに先人によって解決済みであって、ネットを調べればすぐ答えが見つかる。しかしたくさんの疑問点をひとつひとつ解いていくのはけっして容易ではなかった。
+Pythonはとても習得しやすいプログラミング言語だとわたしは思う。しかしPythonでコードを自作するための環境の作り方とツールの使い方がよくわからなかった。Python処理系それ自体をどうインストールするか、特に複数バージョンのPythonを使い分けるにはどうするか、プロジェクトごとさまざまな外部パッケージをどう管理するか、自作したコードをどうやってライブラリ化するか、自作したコードを本番マシンでどうやって配備するか。これらはすでに先人の手で解決済みでありネットを検索すれば答えが見つかる。しかしたくさんの疑問点を習うのは容易でなかった。
 
-Pythonによるソフトウェア開発のために環境をいかに構築しどうツールを使うかそのお手本となるコード一式とメモを仕込んで、このレポジトリに格納しGit Hubにアップしようと思う。Git HubのTemplate Repository機能を役立てられるように準備しよう。
+Pythonによる開発環境とツールの使い方をメモしたREADMEをこのレポジトリに格納しGit Hubにアップしよう。ひたすら自分のために。Git HubのTemplate Repository機能を役立てられるように準備しよう。
 
 
 ## 前提条件
@@ -82,9 +82,7 @@ Pythonによるソフトウェア開発のために環境をいかに構築し�
 
 ## 複数モジュールから成るプロジェクトを作った
 
-一つのシステムを構築するのに複数の技術要素を組み合わせたくなる場合がよくある。その場合、複数のモジュールを一つのGitレポジトリにまとめてバージョン管理したい。
-
-そこで本プロジェクトでは手本として、下記のようにこのレポジトリの中に３つのサブプロジェクトを作って、ひとまとめにバージョン管理することにした。
+コマンドラインで動くPythonアプリとWebサーバとクライアントと自動化テストとをひとまとめにしてGitレポジトリにまとめてバージョン管理したいと考えた。ひとつのプロジェクトのなかに３つのサブプロジェクトを配置した。
 
 ```
 $ tree $ROOTPROJ
@@ -96,7 +94,9 @@ $ tree $ROOTPROJ
 
 >なお上記で `ROOTPROJ` という記号を用いていた。これは本レポジトリをわたしのPCのローカルディスクにcloneすることによって作られたディレクトリ（たとえば `~/github/MultipleModulesProjectTemplate`）を表します。
 
->サブプロジェクトが３つとはかぎらない。プログラミング言語もPythonだけとはかぎらない。サブプロジェクトをJavaやNodeで作ることもあるだろう。
+>サブプロジェクトが３つとはかぎらない。プログラミング言語もPythonだけとはかぎらない。将来、サブプロジェクトをJavaやNodeで作ることもあるだろう。
+
+
 
 ### IntelliJ IDEAでマルチモジュールなプロジェクトを作った
 
@@ -113,11 +113,11 @@ $ tree $ROOTPROJ
 
 >IntelliJ IDEAでマルチモジュールのプロジェクトを作るやり方を今回やっと見つけた。ふと思い出してはちょっと調べてもよくわからず放置するのを繰り返してもう１年以上経過した。わかってみれば簡単だったのだが。
  
-3つのサブプロジェクトはそれぞれどういう内容のプロジェクトか？以下に概要を述べる。
+3つのサブプロジェクトはそれぞれどういう内容のプロジェクトか？ 以下に概要を述べる。
 
 ### pycliappの概要
 
-このサブプロジェクトではcommandlineで実行するapplicationをPython言語で開発します。
+ここではコマンドラインで実行するアプリケエーションをPython言語で開発します。
 
 1. 最初にmacOSにPython処理系をインストールする。[pyenv](https://github.com/pyenv/pyenv) を使って [Anaconda](https://www.anaconda.com/) をインストールする。複数のバージョンのPython処理系をインストールして、切り替えられるようにする。
 1. Pythonプロジェクトの標準的なディレクトリ構造を導入します
@@ -130,7 +130,7 @@ $ tree $ROOTPROJ
 
 ### pywebappの概要
 
-このサブプロジェクトでは WebサーバアプリケーションをPython言語で開発します。
+ここでは WebサーバアプリケーションをPython言語で開発します。
 
 1. フレームワーク [Flask](https://palletsprojects.com/p/flask/) の [チュートリアル](https://flask.palletsprojects.com/en/1.1.x/tutorial/) を隅々まで写経して、ちゃんと動作するWebアプリケーションを作ります。
 1. チュートリアルが提供するユニットテストのコードも写経します。Pythonによる上手なコーディング技法の例がテンコ盛りです。
@@ -140,15 +140,15 @@ $ tree $ROOTPROJ
 
 詳細は[pywebappの説明](#pywebappの説明)を参照のこと
 
-### pywebuitestの概要
+### pywebuiの概要
 
-このサブプロジェクトでpywebappのサーバがブラウザに応答したWebページをテストする自動化テストを開発します。
+pywebappのサーバがブラウザに応答したWebページをテストする自動化テストをこのサブプロジェクトで開発します。
 
 1. `pywebapp`サブプロジェクトが構築したWebアプリを対象として自動化テストを実行します。
 1. [Selenium](https://selenium-python.readthedocs.io/) を用いたPythonプログラムを開発してWebページをテストします。
 1. Page Object Model のデザインを用いてテストコードを設計します。
 
-詳細は[pywebuitestの説明](#pywebuitestの説明)を参照のこと
+詳細は[pywebuiの説明](#pywebuiの説明)を参照のこと
 
 ### 記号ROOTPROJの定義
 
@@ -328,7 +328,7 @@ pycliappプロジェクトのなかであとでユニットテストをします
 
 ```
 $ cd $SUBPROJ
-$ pipenv install pytest
+$ pipenv install --dev pytest
 
 Installing pytest...
 Adding pytest to Pipfile's [packages]...
@@ -550,7 +550,7 @@ $ tree .
 
 このレポジトリをIntelliJ IDEAでEmpty Projectとして作り、そのなかに包含される形で pycliapp をはじめとする３つのディレクトリをつくりました。IDEA用語でいえば「モジュール」を３つ作りました。そのあとコマンドラインで pipenvコマンドを実行して pycliappモジュール専用のPython仮想環境をつくりpytestなど外部依存ライブラリをインストールしました。ところがまだIDEAにはまだなんの設定も加えていません。だからIDEAでpycliappモジュールを開いたときにそれ専用の仮想環境を使うように設定できていません。
 
-Anacondaにはnumpyを膨大な数のライブラリがすでにバンドルされています。pytestもバンドルされています。ところがあとで pywebuitestプロジェクトが使う [selenium](https://selenium-python.readthedocs.io/) はAnacondaに含まれていません。だからサブプロジェクト専用のPython仮想環境に selenium を追加インストールするでしょう。そしてIDEAでpywebuitestを開いたときに専用の仮想環境を指定してプロジェクトを実行できるよう設定しておく必要があります。
+Anacondaにはnumpyを膨大な数のライブラリがすでにバンドルされています。pytestもバンドルされています。ところがあとで pywebuiプロジェクトが使う [selenium](https://selenium-python.readthedocs.io/) はAnacondaに含まれていません。だからサブプロジェクト専用のPython仮想環境に selenium を追加インストールするでしょう。そしてIDEAでpywebuiを開いたときに専用の仮想環境を指定してプロジェクトを実行できるよう設定しておく必要があります。
 
 IDEAでPythonモジュールの処理系を設定する作業は二段階を踏みます。第一に 仮想環境を追加するたびに、IDEAにとってPlatform SDK のひとつとして登録してやります。第二に pycliappはじめ各プロジェクトにたいして Project SDKとしてPlatform SDKをひとつ選択してアサインします。各プロジェクト専用に準備した仮想環境を正しく選択して各プロジェクトのProject SDKにアサインします。
 
@@ -592,7 +592,7 @@ OKするとIDEAが数秒走って `Python 3.8 (pycliapp-32imfJAR)` みたいな�
 
 つぎに pycliappモジュールが参照すべきSDKを設定します。
 
-*Files > Project Structure...* でダイアログを開き、左メニューで *Project Settings > Modules*を選ぶ。するとこのプロジェクトのなかに含まれている３つのモジュール (pycliapp、pywebapp、pywebuitest)が一覧に表示される。pycliappモジュールをクリックして選択します。そして *Module SDK* として上記で追加した `Python 3.8 (MyPythonProjectTemplate-pycliapp)`を設定します。
+*Files > Project Structure...* でダイアログを開き、左メニューで *Project Settings > Modules*を選ぶ。するとこのプロジェクトのなかに含まれている３つのモジュール (pycliapp、pywebapp、pywebui)が一覧に表示される。pycliappモジュールをクリックして選択します。そして *Module SDK* として上記で追加した `Python 3.8 (MyPythonProjectTemplate-pycliapp)`を設定します。
 
 ![14](docs/images/14_AddPythonInterpreter_added.png)
 
@@ -664,7 +664,8 @@ $ pipenv install --dev
 
 ```
 $ cd $SUBPROJ
-$ pipenv install flask pytest
+$ pipenv install flask
+$ pipenv install --dev pytest
 ```
 
 ### Flask Tutorialを写経する
@@ -1065,10 +1066,50 @@ https://hub.docker.com/ をみればイメージがアップされたのがわ�
 ![40](docs/images/40_DockerImageInDockerHub.png)
 
 ---------------------------------------------------------
-## pywebuitestの説明
+## pywebuiの説明
 
-概要は[pywebuitestの概要](#pywebuitestの概要)を参照のこと。
+概要は[pywebuiの概要](#pywebuiの概要)を参照のこと。
 
+### pywebuiを準備する
+
+pywebappサブプロジェクトを作り終えて http://localhost:80/ が立ち上がったことを前提とする。
+このURLが提供する一連のWebページをSeleniumで自動化テスト一式を開発する。
+
+pywebuiはあくまで開発ツールなので、pipでライブラリ化する必要はないし、Dockerコンテナで動かす必要もない。
+
+#### 目標を設定する
+
+FlaskのTutorialドキュメントに [Test Coverage](https://flask.palletsprojects.com/en/1.1.x/tutorial/tests/) と題する章があって、 ユニットテストのサンプルが提示されている。たくさんのテストケースが網羅されている。たとえば新しいユーザを登録する、新しい投稿を入力する、投稿を一覧表示する、など。これらのケースを人間がWebブラウザを操作して実行するのと同じことをSeleniumを介して自動化テストが模擬的に実行して期待通りにWebアプリケーションが動作するかどうかを確認しよう。
+
+#### 準備
+
+##### 記号 SUBPROJ の定義
+
+
+##### pywebuiサブプロジェクトのためにPython仮想環境をつくる
+
+
+##### IntelliJ IDEAでSDKを設定する
+
+##### ディレクトリ構造を決める
+
+
+##### pytest と selenium をインストールする
+
+```
+$ pipenv install --dev pytest selenium
+```
+
+### SeleniumテストをPythonで書く
+
+Seleniumを動かすPythonプログラムをどうやって書くか？入門するのに下記の記事がとても役にたった。
+
+- [Web UI Testing Made Easy with Python, Pytest and Selenium WebDriver](https://blog.testproject.io/2019/07/16/web-ui-testing-python-pytest-selenium-webdriver/)
+
+
+とくにPage Objectパターンの記事が良かった。
+
+- [TestProject / Develop Page Object Selenium Tests Using Python](https://blog.testproject.io/2019/07/16/develop-page-object-selenium-tests-using-python/)
 
 ---------------------------------------------------------
 ## 補足
