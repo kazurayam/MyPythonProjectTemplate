@@ -1091,7 +1091,7 @@ https://hub.docker.com/ をみればイメージがアップされたのがわ�
 
 概要は[pywebuiの概要](#pywebuiの概要)を参照のこと。
 
-### pywebuiを準備する
+### pywebuiサブプロジェクトを準備する
 
 pywebappサブプロジェクトを作り終えて http://localhost:80/ が立ち上がったことを前提とする。
 このURLが提供する一連のWebページをSeleniumで自動化テスト一式を開発する。
@@ -1102,18 +1102,21 @@ pywebuiはあくまで開発ツールなので、pipでライブラリ化する�
 
 FlaskのTutorialドキュメントに [Test Coverage](https://flask.palletsprojects.com/en/1.1.x/tutorial/tests/) と題する章があって、 ユニットテストのサンプルが提示されている。たくさんのテストケースが網羅されている。たとえば新しいユーザを登録する、新しい投稿を入力する、投稿を一覧表示する、など。これらテストケースのうちいくつか根本的なケースを選んでSeleniumによる自動化テストとして実装しよう。
 
+#### 記号 SUBPROJ の定義
 
-#### 準備
+```
+$ cd ~/github/MyPythonProjecTemplate/pywebui
+$ export SUBPROJ=$(pwd)
+```
 
-##### 記号 SUBPROJ の定義
+#### 仮想環境を準備する
 
+pywebuiサブプロジェクトのために次の作業をする。
 
-##### pywebuiサブプロジェクトのためにPython仮想環境をつくる
+- Python仮想環境を作る
+- IntelliJ IDEAでSDKを設定する
 
-
-##### IntelliJ IDEAでSDKを設定する
-
-##### ディレクトリ構造を決める
+やり方はpywebappサブプロジェクトで説明したやり方と同じだ。
 
 
 ##### pytest と selenium をインストールする
@@ -1128,10 +1131,46 @@ Seleniumを動かすPythonプログラムをどうやって書くか？入門す
 
 - [Web UI Testing Made Easy with Python, Pytest and Selenium WebDriver](https://blog.testproject.io/2019/07/16/web-ui-testing-python-pytest-selenium-webdriver/)
 
-
 とくにPage Objectパターンの記事が良かった。
 
 - [TestProject / Develop Page Object Selenium Tests Using Python](https://blog.testproject.io/2019/07/16/develop-page-object-selenium-tests-using-python/)
+
+この記事のサンプルコードを pywebui プロジェクトのなかに写経した。
+
+
+#### Seleniumテストを実行する
+
+Seleniumテストを実行するには下記のようにコマンドを投入する。
+
+```
+$ cd $SUBPROJ
+$ pipenv run pytest
+
+===================== test session starts ======================
+platform darwin -- Python 3.8.5, pytest-6.2.2, py-1.10.0, pluggy-0.13.1
+rootdir: /Users/kazuakiurayama/github/MyPythonProjectTemplate/pywebui
+collected 10 items                                             
+
+tests/test_duckduckgo_pageobject.py .                    [ 10%]
+tests/test_duckduckgo_web.py s                           [ 20%]
+tests/test_math.py .s......                              [100%]
+
+================= 8 passed, 2 skipped in 7.40s =================
+```
+
+[pywebui/tests/test_duckduckgo.py](pywebui/tests/test_duckduckgo.py) のなかにこう書いてある。
+
+```
+# @pytest.mark.skip(reason="DuckDuckGoのテストをわざとスキップする")
+def test_basic_duckduckgo_search(browser):
+    ...
+```
+行頭に `#` を書いて `@pytest.mark.skip()` をコメントアウトしてあることに注意。この `#` を消せば `test_basidc_duckduckgo_seartch`のテストをスキップすることができる。
+
+
+#### 自作のWebアプリ flaskr をテストするSeleniumテストを書く
+
+
 
 ---------------------------------------------------------
 ## 補足

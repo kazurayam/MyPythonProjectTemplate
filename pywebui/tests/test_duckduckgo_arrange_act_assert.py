@@ -1,4 +1,8 @@
 """
+See
+    https://blog.testproject.io/2019/07/16/web-test-using-selenium-webdriver-python-chrome/
+for the original artiele.
+
 1. Navigate to the DuckDuckGo home page
 2. Enter the search phrase
 3. Verify that:

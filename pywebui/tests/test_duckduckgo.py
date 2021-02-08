@@ -1,4 +1,8 @@
 """
+See
+    https://blog.testproject.io/2019/07/16/develop-page-object-selenium-tests-using-python/
+for the original article.
+
 1. Navigate to the DuckDuckGo home page
 2. Enter the search phrase
 3. Verify that:
@@ -57,7 +61,7 @@ def browser(config_browser, config_wait_time):
     # For clean up, quit the driver
     driver.quit()
 
-
+# @pytest.mark.skip(reason="DuckDuckGoのテストをわざとスキップする")
 def test_basic_duckduckgo_search(browser):
     PHRASE = 'panda'
 
