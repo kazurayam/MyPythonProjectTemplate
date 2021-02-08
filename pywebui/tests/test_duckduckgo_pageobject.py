@@ -10,21 +10,33 @@ This uses "Page Object"
 """
 
 import pytest
+import json
 
-from selenium.webdriver import Chrome
-from selenium.webdriver.common.keys import Keys
+from selenium.webdriver import Chrome, Firefox
 
 from duckduckgopages.search import DuckDuckGoSearchPage
 from duckduckgopages.result import DuckDuckGoResultPage
 
 
+@pytest.fixture(scope='session')
+def config():
+    with open('tests/duckduckgo_config.json') as config_file:
+        data = json.load(config_file)
+    return data
+
+
 @pytest.fixture
-def browser():
-    # Initialize ChromeDriver
-    driver = Chrome()
+def browser(config):
+    if config['browser'] == 'chrome':
+        # Initialize ChromeDriver
+        driver = Chrome()
+    elif config['browser'] == 'firefox':
+        driver = Firefox()
+    else:
+        raise Exception(f'"{config["browser"]}" is not a supported browser')
 
     # Wait implicitly for elements to be ready before attempting interactions
-    driver.implicitly_wait(10)
+    driver.implicitly_wait(config['wait_time'])
 
     # Return the driver object at the end of setup
     yield driver
