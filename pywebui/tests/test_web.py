@@ -20,7 +20,7 @@ from duckduckgopages.result import DuckDuckGoResultPage
 
 @pytest.fixture(scope='session')
 def config():
-    with open('tests/duckduckgo_config.json') as config_file:
+    with open('tests/config.json') as config_file:
         data = json.load(config_file)
     return data
 
