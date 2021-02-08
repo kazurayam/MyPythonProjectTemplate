@@ -61,9 +61,9 @@
 
 ## これは何か
 
-Pythonはプログラミング言語としてはとても習得しやすい言語だ。 ところがPython言語でプログラムを自作しようと仕事し始めたとたん、さまざまな疑問に遭遇した。Python処理系それ自体をどうインストールするか、特に複数バージョンのPythonを使い分けるにはどうするか、プロジェクトごとさまざまな外部パッケージをどう管理するか、自作したコードをどうやってライブラリ化するか、自作したコードを本番マシンでどうやって配備するか、といった問題だ。開発環境をどう作るか、開発ツールをどう使うか。こうした問題はすでに先人の手で解決済みであってネットを調べれば答えが見つかる。しかしこうしたノウハウを習得するのは容易ではなかった。
+Pythonはとても習得しやすいプログラミング言語だとわたしは思う。ところが自作に取り組み始めたら開発ツールの使い方がわからなくて迷った。Python処理系それ自体をどうインストールするか、特に複数バージョンのPythonを使い分けるにはどうするか、プロジェクトごとさまざまな外部パッケージをどう管理するか、自作したコードをどうやってライブラリ化するか、自作したコードを本番マシンでどうやって配備するか。こうした問題はすでに先人によって解決済みであって、ネットを調べればすぐ答えが見つかる。しかしたくさんの疑問点をひとつひとつ解いていくのはけっして容易ではなかった。
 
-Pythonによる開発環境をいかに構築し開発ツールを使うかのお手本となるコード一式を仕込んで、このレポジトリに格納しGit Hubにアップしようと思う。今後自分がさまざまな仕事をPythonで解決しようとするときGit HubのTemplate Repository機能を使ってさっさと環境を構築できるように準備しよう。
+Pythonによるソフトウェア開発のために環境をいかに構築しどうツールを使うかそのお手本となるコード一式とメモを仕込んで、このレポジトリに格納しGit Hubにアップしようと思う。Git HubのTemplate Repository機能を役立てられるように準備しよう。
 
 
 ## 前提条件
@@ -89,7 +89,7 @@ $ tree $ROOTPROJ
 
 >なお上記で `ROOTPROJ` という記号を用いていた。これは本レポジトリをわたしのPCのローカルディスクにcloneすることによって作られたディレクトリ（たとえば `~/github/MultipleModulesProjectTemplate`）を表します。
 
->サブプロジェクトの数は３つとかぎらない、Python言語だけとはかぎらない。サブプロジェクトをJavaやNodeで作ることもあるだろう。
+>サブプロジェクトが３つとはかぎらない。プログラミング言語もPythonだけとはかぎらない。サブプロジェクトをJavaやNodeで作ることもあるだろう。
 
 ### IntelliJ IDEAでマルチモジュールなプロジェクトを作った
 
@@ -103,7 +103,9 @@ $ tree $ROOTPROJ
 1. IDEAで MultipleModulesProjectTemplate プロジェクトが開いたら、*File > Project Structure* でプロジェクトの構造を設定するダイアログを開く。メニューから *Project Settings > Modules* を選択する。Moduleを＋（追加）する。`pycliapp`モジュールを＋し、`pywebapp`モジュールを＋し、`pywebuitest`モジュールを＋する。これでサブプロジェクトが３つできる。
 
 >ここで「モジュール」という言葉を使ったがこれはIDEAが定義する用語としての「モジュール」である。Python言語が定義する「モジュール」ではない。混同しないよう気をつけよう。Python言語でモジュールとは `myapp.py` のように名前の末尾が `.py` のファイルのことだが、IDEAの用語法はまったく違う。
-   
+
+>IntelliJ IDEAでマルチモジュールのプロジェクトを作るやり方を今回やっと見つけた。ふと思い出してはちょっと調べてもよくわからず放置するのを繰り返してもう１年以上経過した。わかってみれば簡単だったのだが。
+ 
 3つのサブプロジェクトはそれぞれどういう内容のプロジェクトか？以下に概要を述べる。
 
 ### pycliappの概要
@@ -898,14 +900,162 @@ Ctrl+Cでwaitress-serveを停止する。
 
 #### PyPIにアップロードする
 
-ライブラリのファイルを [テスト用のPyPI](https://test.pypi.org/) にアップロードして共有可能します。
+PyPIとは *The Python Package Index* の略。自作した `flaskr-kazurayam`パッケージを TestPyPI にアップロードしよう。どこでも `pip install xxxxx` でインストールできるようになる。
+
+#### Twineをインストールする
+
+Twineというツールを使ってPyPIにアップロードします。下記の記事を参考にTwineをインストールした。
+
+- [Python: Twine を使って PyPI にパッケージをアップロードする](https://blog.amedama.jp/entry/2017/12/31/175036)
+
+```
+$ cd $SUBPROJ
+$ pipenv install --dev twine
+```
+
+#### PyPIに自分のためのアカウントを作る
+
+本番リリース用のサイト https://pypi.org/ のRegister画面で自分のためのアカウントを作れ。
+
+テストリリース用のサイト https://test.pypi.org/ のRegister画面で自分のためのアカウントを作れ。
+
+UsernameとPasswordをメモして安全に保管せよ。
+
+[~/.pypirc](https://packaging.python.org/specifications/pypirc/)を作れ。中身は下記のようなかんじ。twineがPyPIと通信するときUsernameとPasswordを.pypircから読み取ってくれる。当然ながら `~/.pypirc` を他人の目に晒さないように注意せよ。
+
+```
+[distutils]
+index-servers =
+  pypi
+  pypitest
+
+[pypi]
+repository=https://upload.pypi.org/legacy/
+username=uuuuuuuu
+password=pppppppp
+
+[pypitest]
+repository=https://test.pypi.org/legacy/
+username=xxxxxxxx
+password=yyyyyyyy
+```
+
+#### TestPyPIに自作ライブラリをアップする
+
+```
+$ cd $SUBPROJ
+$ pipenv run python setup.py bdist_wheel
+...
+$ pipenv run twine upload --repository pypitest dist/*
+```
+
+[テスト用のPyPI](https://test.pypi.org/) に flaskr-kazurayam　パッケージがアップロードされた。
+
+![30](docs/images/30_PackageInTestPyPI.png)
 
 
 
 
-### Dockerイメージをつくる、Dockerコンテナを起動する
+### Dockerイメージを作ってDockerコンテナを起動する
 
-さらにDockerイメージを作って[Docker Hub](https://hub.docker.com/) にアップロードして共有可能にします。Docker http://localhost:80/ でアクセス
+`docker`コマンドを使って `flaskr-kazurayam` のWebサーバアプリを仕込んだDockerイメージを作成しよう。DockerイメージをDocker Hubにアップして共有しよう。DockerイメージからDockerコンテナを立ち上げて、http://localhost:80/ で flaskr-kazurayam のサイトにアクセスできるようにしよう。
+
+#### Docker Desktop for Macをインストールする
+
+macOS Big Sur 11.2に Docker Desktop for Mac をインストールして使うことにする。Docker Desktop for Macがあればコマンドラインで `docker` コマンドが動く。
+
+インストール手順については https://docs.docker.com/docker-for-mac/install/ を参照のこと。dmgファイルをダウンロードしてダブルクリックしてMacのApplicationsディレクトリに格納するだけだ。
+
+#### Docker Hubにアカウントを作る
+
+[Docker Hub](https://hub.docker.com/) に自分のためのアカウントを作れ。UsernameとPasswordをメモして安全に保管せよ。
+
+#### Dockerイメージを作る
+
+[pywebapp/Dockerfile](pywebapp/Dockerfile) ファイルを作った。ここにはDockerイメージを作る手順をDockerコマンドで記述しておく。
+
+#### IPポートの対応づけ
+
+IPポートの対応付けを次のようにした。
+
+1. コンテナ内の `waitress-serve`が8080番ポートをlistenする。
+1. Dockerコンテナは8080番ポートをEXPOSEする
+1. Dockerコンテナ起動時にOSの80番ポートとコンテナの8080番ポートとを対応付ける
+
+1と2の設定は[pywebapp/Dockerfile](pywebapp/Dockerfile)にあらかじめ記述しておく。
+
+3のポート・マッピングは`docker run`コマンド実行時にパラメータとして指定する。
+
+#### Docker イメージを作る
+
+`docker build`コマンドでイメージを作る。コマンドの形式は
+- `docker build --tag <DockHubアカウント名>/<パッケージ名>:<バージョン> <Dockerfileのある
+> ディレクトリ>`
+
+```
+$ cd $SUBPROJ
+$ docker build --tag kazurayam/flaskr-kazurayam:1.0.3 .
+...
+Successfully built feb927092f61
+Successfully tagged kazurayam/flaskr-kazurayam:1.0.3
+```
+
+かなりたくさんのメッセージが出力されたあとDockerイメージが生成されてローカルディスクに保存されたのがわかる。
+
+
+#### ローカルに存在しているDockerイメージの一覧を確認する
+
+```
+$ docker image ls
+REPOSITORY                       TAG          IMAGE ID       CREATED         SIZE
+kazurayam/flaskr-kazurayam       1.0.3        feb927092f61   3 minutes ago   174MB
+...
+```
+
+#### Dockerイメージはローカルのどこに保存されているのか
+
+`docker build`コマンドで作成されたDockerイメージはローカルディスクのどこに保存されているのだろうか？--- それは知らなくていい。
+
+作成したDockerイメージを別PCでも利用したければ、`docker push`コマンドでイメージをDocker Hubにあげよ。そして別PCに移って`docker build`を実行せよ。するとDocker Hubからイメージがダウンロードされる。`docker`コマンドがよろしく仕事してくれる。だからローカルのどこにイメージが一時保管されるのかをわたしは気にする必要がない。
+
+#### Dockerコンテナを起動する
+
+作業用の `~/tmp` ディレクトリにcdしてから　Dockerコンテナを起動しよう。
+
+```
+$ cd ~/tmp
+$ docker run -it -p 80:8080 --rm kazurayam/flaskr-kazurayam:1.0.3
+Serving on http://0.0.0.0:8080
+```
+
+ここで`-p ホスト側ポート番号:コンテナ側ポート番号` を指定していることに注目せよ。
+
+`Serving on ...`のメッセージをみればDockerコンテナのなかでwaitress-serveのプロセスが起動したのがわかる。 ここでブラウザで
+
+- http://localhost:80/
+
+にアクセスすればたしかに画面が応答された。
+
+#### DockerイメージをDocker Hubにアップする
+
+DockerHubにコマンドラインからログインする
+```
+$ docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: アカウント名
+Password: パスワード
+Login Succeeded
+```
+
+DockerHubにイメージをpushする
+
+```
+$ docker push kazurayam/flaskr-kazurayam:1.0.3
+```
+
+https://hub.docker.com/ をみればイメージがアップされたのがわかる。
+
+![40](docs/images/40_DockerImageInDockerHub.png)
 
 ---------------------------------------------------------
 ## pywebuitestの説明
