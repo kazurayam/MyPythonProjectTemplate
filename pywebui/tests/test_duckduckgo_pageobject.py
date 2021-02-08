@@ -5,12 +5,18 @@
     a. Results appear on the result page
     b. The search phrase appears in the search bar
     c. At least one search result contains the search phrase
+
+This uses "Page Object"
 """
 
 import pytest
 
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.keys import Keys
+
+from duckduckgopages.search import DuckDuckGoSearchPage
+from duckduckgopages.result import DuckDuckGoResultPage
+
 
 @pytest.fixture
 def browser():
@@ -26,25 +32,16 @@ def browser():
     # For clean up, quit the driver
     driver.quit()
 
-@pytest.mark.skip(reason="Page Objectによるテストだけで足りるのでこちらをスキップ")
+
 def test_basic_duckduckgo_search(browser):
-    URL = 'https://www.duckduckgo.com'
     PHRASE = 'panda'
 
-    browser.get(URL)
+    search_page = DuckDuckGoSearchPage(browser)
+    search_page.load()
+    search_page.search(PHRASE)
 
-    search_input = browser.find_element_by_id(
-        'search_form_input_homepage')
-    search_input.send_keys(PHRASE + Keys.RETURN)
+    result_page = DuckDuckGoResultPage(browser)
+    assert result_page.link_div_count() > 0
+    assert result_page.phrase_result_count(PHRASE) > 0
+    assert result_page.search_input_value() == PHRASE
 
-    link_divs = browser.find_elements_by_css_selector(
-        '#links > div')
-    assert len(link_divs) > 0
-
-    xpath = f"//div[@id='links']//*[contains(text(),'{PHRASE}')]"
-    results = browser.find_elements_by_xpath(xpath)
-    assert len(results) > 0
-
-    search_input = browser.find_element_by_id(
-        'search_form_input')
-    assert search_input.get_attribute('value') == PHRASE
