@@ -12,17 +12,13 @@ for the original article.
 
 This uses "Page Object"
 """
-
 import pytest
-import json
-
-from selenium.webdriver import Chrome, Firefox
 
 from duckduckgopages.search import DuckDuckGoSearchPage
 from duckduckgopages.result import DuckDuckGoResultPage
 
 
-# @pytest.mark.skip(reason="DuckDuckGoのテストをわざとスキップする")
+@pytest.mark.skip(reason="DuckDuckGoのテストをわざとスキップする")
 def test_basic_duckduckgo_search(browser):
     PHRASE = 'panda'
 

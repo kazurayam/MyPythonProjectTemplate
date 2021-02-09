@@ -14,3 +14,13 @@ developed by the pywebapp subproject.
 6. Edit the post text and save it.
 7. Verify if the post text is updated in the list.
 """
+
+from flaskrpages.blog.index import FlaskrIndexPage
+
+
+def test_basic_flaskr_operation(browser, credential):
+    index_page = FlaskrIndexPage(browser)
+    index_page.load()
+
+    print(credential)
+    #assert False

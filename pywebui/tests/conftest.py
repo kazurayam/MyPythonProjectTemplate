@@ -1,11 +1,6 @@
 import json
 import pytest
-
-from selenium.webdriver import Chrome, Firefox
-
-
-import json
-import pytest
+import datetime
 
 from selenium.webdriver import Chrome, Firefox
 
@@ -20,6 +15,18 @@ def config():
     # Read the JSON config file and returns it as a parsed dict
     with open(CONFIG_PATH) as config_file:
         data = json.load(config_file)
+    return data
+
+
+@pytest.fixture(scope='session')
+def credential():
+    # dynamically generate Username/Password
+    # for the flaskr webapp based on the timestamp
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    data = {
+        'username': 'UN' + timestamp,
+        'password': 'PW' + timestamp,
+    }
     return data
 
 
@@ -57,4 +64,3 @@ def browser(config_browser, config_wait_time):
 
     # For cleanup, quit the driver
     driver.quit()
-
