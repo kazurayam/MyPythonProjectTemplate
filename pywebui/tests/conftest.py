@@ -22,7 +22,7 @@ def config():
 def credential():
     # dynamically generate Username/Password
     # for the flaskr webapp based on the timestamp
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.datetime.now().strftime("%Y%m%dT%H%M%S")
     data = {
         'username': 'UN' + timestamp,
         'password': 'PW' + timestamp,
