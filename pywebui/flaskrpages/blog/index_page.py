@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from flaskrpages.blog.post import Post
 
 
 class IndexPage:
@@ -16,11 +17,11 @@ class IndexPage:
         """
         :param index: 1,2,3, ...
         """
-        xpath = f"//article[@class='post'][{index}])]"
+        xpath = f"//article[@class='post' and position()={index}]"
         return By.XPATH, xpath
 
     @classmethod
-    def POST_BY_ID(cls, id):
+    def POST_BY_POSTID(cls, id):
         xpath = f"//article[@class='post']/header/a[starts-with(@href, '/{id}')]/ancestor::article"
         return By.XPATH, xpath
 
@@ -49,3 +50,20 @@ class IndexPage:
     def get_posts_count(self):
         posts = self.browser.find_element(*self.POSTS)
         return len(posts) if posts is not None else 0
+
+    def get_latest_post(self):
+        return self.get_post_by_index(1)
+
+    def get_post_by_index(self, index):
+        article = self.browser.find_element(*self.POST_BY_INDEX(index))
+        if article is not None:
+            return Post(article)
+        else:
+            return None
+
+    def get_post_by_postid(self, postid):
+        article = self.browser.find_element(*self.POST_BY_POSTID(postid))
+        if article is not None:
+            return Post(article)
+        else:
+            return None

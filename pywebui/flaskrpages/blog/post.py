@@ -20,6 +20,7 @@ class Post:
     """
     TITLE = (By.XPATH, '//header/div/h1')
     BODY = (By.XPATH, '//p[1]')
+    EDIT = (By.XPATH, '//header/a')
 
     def __init__(self, article):
         self.article = article
@@ -31,3 +32,10 @@ class Post:
     def get_body(self):
         body_p = self.article.find_element(*self.BODY)
         return body_p.text
+
+    def get_postid(self):
+        anchor = self.article.find_element(*self.EDIT)
+        href = anchor.get_attribute('href')
+        postid = href.split('/')[1]
+        return postid if postid is not None else ''
+

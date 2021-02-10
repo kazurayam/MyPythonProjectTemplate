@@ -5,15 +5,15 @@ class UpdatePostPage:
 
     TITLE_INPUT = (By.ID, 'title')
     BODY_INPUT = (By.ID, 'body')
-    SAVE_INPUT = (By.XPATH, '//input[@type="submit" and @value="Save"]')
-    DELETE_INPUT = (By.XPATH, '//input[@type="submit" and @value="Delete"]')
+    SAVE_BUTTON = (By.XPATH, '//input[@type="submit" and @value="Save"]')
+    DELETE_BUTTON = (By.XPATH, '//input[@type="submit" and @value="Delete"]')
 
     def __init__(self, browser):
         self.browser = browser
 
-    def save_input_exists(self):
-        save_input = self.browser.find_element(*self.SAVE_INPUT)
-        return save_input is not None
+    def save_button_exists(self):
+        save_button = self.browser.find_element(*self.SAVE_BUTTON)
+        return save_button is not None
 
     def type_title(self, title):
         title_input = self.browser.find_element(*self.TITLE_INPUT)
@@ -24,9 +24,9 @@ class UpdatePostPage:
         body_input.send_keys(body)
 
     def do_save(self):
-        save_input = self.browser.find_element(*self.SAVE_INPUT)
-        save_input.click()
+        save_button = self.browser.find_element(*self.SAVE_BUTTON)
+        save_button.click()
 
     def do_delete(self):
-        delete_input = self.browser.find_element(*self.DELETE_INPUT)
-        delete_input.click()
+        delete_button = self.browser.find_element(*self.DELETE_BUTTON)
+        delete_button.click()
