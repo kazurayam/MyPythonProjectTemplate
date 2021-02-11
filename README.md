@@ -88,10 +88,9 @@
 
 ## これは何か
 
-Pythonはとても習得しやすいプログラミング言語だとわたしは思う。しかしPythonでコードを自作するための環境の作り方とツールの使い方がよくわからなかった。Python処理系それ自体をどうインストールするか、特に複数バージョンのPythonを使い分けるにはどうするか、プロジェクトごとさまざまな外部パッケージをどう管理するか、プロジェクトのディレクトリ構造をどういう形にするのがベストなのか、自作したコードをどうやってライブラリ化するか、自作したコードを本番マシンに配備するにはどうすればいいのか。こうした論点はすでに先人の手で解決済みであり、ネットを検索すればすぐに答えが見つかる。でもたくさんの疑問をひとつひとつ解いていくのは容易でなかった。
+Pythonはとても習得しやすいプログラミング言語だとわたしは思う。しかしPythonでコードを自作するための環境の作り方とツールの使い方がよくわからなかった。Python処理系それ自体をどうインストールするか、特に複数バージョンのPythonを使い分けるにはどうするか、各プロジェクトがさまざまの外部パッケージに依存する関係性をどう記録し登録し再現するか、プロジェクトのディレクトリ構造をどういう形にするのがベストなのか、自作したコードをどうやってライブラリ化して pip install xxxxxx できるようにするか、自作したコードをDockerで本番マシンに配備するにはどうすればいいのか。こうした点はすでに先人の手で解決済みであり、ネットを検索すればすぐに答えが見つかる。しかし次々わいてくる疑問を解いていくのは容易でなかった。
 
-Pythonによる開発のために環境とツールをどう使いこなすか、手本とメモをこのレポジトリに格納しGit Hubにアップしよう。自分のために。Git HubのTemplate Repository機能を役立てられるように準備しよう。
-
+Pythonによる開発のために環境とツールをどう使いこなすかを解明しようと四苦八苦した結果できたコードと説明文をこのレポジトリに格納してGit Hubにアップしておく。あくまで自分のために。あとで新しいプロジェクトを始めるときGit HubのTemplate Repository機能を使って役立てることができるだろう。
 
 ## 前提条件
 
@@ -1169,7 +1168,44 @@ def test_basic_duckduckgo_search(browser):
 
 #### 自作のWebアプリ flaskr をテストするSeleniumテストを書く
 
+- [pywebui/tests/test_flaskr.py](pywebui/tests/test_flaskr.py)
 
+このテストは下記のテストをする。Seleniumを使って。
+
+1. ブラウザを起動し http://localhost:80/ を開く
+2. Registerページを開いて新しいUsernameとPasswordを追加登録する。
+   UsernameとPasswordの内容は現在日時に基づき動的に生成する。
+3. 追加したUsername/PasswordでLog Inする
+4. 中島みゆきの「時代」をネタにしてタイトルと本文を入力してPostとして投稿する。
+5. 投稿したPostがindexページの一覧に表示されていることを確かめる。
+6. Postの本文を訂正する。
+7. 訂正内容がindexページに反映されていることを確かめる。
+8. Postを削除する。
+
+test_flaskr.pyを実行するたびにUsername/Passwordの新しい組が追加されて増えていく。
+掃除するコードは作らなかった。
+Dockerコンテナを再起動すればflaskrのdbが初期化されるのでそれで足りる。
+
+#### Seleniumテストを実行する
+
+pywebappサブプロジェクトでflaskrを動かすDockerイメージを作った。このDockerイメージを使ってローカルにflaskrを起動する。
+```
+$ cd ~/tmp
+$ docker run -it -p 80:8080 --rm kazurayam/flaskr-kazurayam:1.0.3
+```
+
+すると
+
+- http://localhost:80/
+
+がアクセスできるようになる。
+
+pywebuiのSeleniumテストを起動するにはこうやる。
+
+```
+$ cd ~/github/MyPythonProjectTemplate/pywebui
+$ pipenv run pytest
+```
 
 ---------------------------------------------------------
 ## 補足
@@ -1178,4 +1214,4 @@ def test_basic_duckduckgo_search(browser):
 
 [GitHubの本プロジェクトのREADME](https://github.com/kazurayam/MultipleModulesProjectTemplate) に目次(Table of Contents)をつけた。下記のページを参考にして実現した。
 
-- [[GitHub]README.mdの目次生成をAction「toc-generator」による自動化で楽しよう](https://dev.classmethod.jp/articles/auto-generate-toc-on-readme-by-actions/)
+- [[GitHub]README.mdの目次生成をAction「tgit oc-generator」による自動化で楽しよう](https://dev.classmethod.jp/articles/auto-generate-toc-on-readme-by-actions/)
