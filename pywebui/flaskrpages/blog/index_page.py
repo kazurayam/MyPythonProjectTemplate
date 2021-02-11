@@ -51,7 +51,32 @@ class IndexPage:
         posts = self.browser.find_element(*self.POSTS)
         return len(posts) if posts is not None else 0
 
-    def get_latest_post(self):
+    def open_update_page_of_latest(self):
+        self.open_update_page_by_index(1)
+
+    def open_update_page_by_index(self, index):
+        article = self.browser.find_element(*self.POST_BY_INDEX(index))
+        if article is not None:
+            self.open_update_page(article)
+        else:
+            raise Exception(f"no <article> found; index: {index}")
+
+    def open_update_page_by_postid(self, postid):
+        article = self.browser.find_element(*self.POST_BY_POSTID(postid))
+        if article is not None:
+            self.open_update_page(article)
+        else:
+            raise Exception(f"no <article> found; postid: {postid}")
+
+    @staticmethod
+    def open_update_page(article):
+        anchor = article.find_element(By.XPATH, "//a[contains(text(), 'Edit')]")
+        if anchor is not None:
+            anchor.click()
+        else:
+            raise Exception(f"no <a>Edit</a> found")
+
+    def get_post_latest(self):
         return self.get_post_by_index(1)
 
     def get_post_by_index(self, index):
