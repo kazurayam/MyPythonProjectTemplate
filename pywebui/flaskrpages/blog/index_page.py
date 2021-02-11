@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
 from flaskrpages.blog.post import Post
 
 
@@ -80,15 +81,15 @@ class IndexPage:
         return self.get_post_by_index(1)
 
     def get_post_by_index(self, index):
-        article = self.browser.find_element(*self.POST_BY_INDEX(index))
-        if article is not None:
+        try:
+            article = self.browser.find_element(*self.POST_BY_INDEX(index))
             return Post(article)
-        else:
+        except NoSuchElementException:
             return None
 
     def get_post_by_postid(self, postid):
-        article = self.browser.find_element(*self.POST_BY_POSTID(postid))
-        if article is not None:
+        try:
+            article = self.browser.find_element(*self.POST_BY_POSTID(postid))
             return Post(article)
-        else:
+        except NoSuchElementException:
             return None

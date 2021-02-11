@@ -14,9 +14,9 @@ developed by the pywebapp subproject.
 6. Edit the post text and save it.
 7. Verify if the latest post text is displayed in the list of posts.
 8. then, identify the post by its ID, and update it with a body text slightly changed.
-9. take a screenshot of the page and save it into a PNG file
-10. then, identify the post by its ID, and delete it
+9. then, identify the post by its ID, and delete it
 """
+
 import time
 
 from flaskrpages.auth.register_credential_page import RegisterCredentialPage
@@ -85,7 +85,7 @@ def test_register_login_post(browser, credential):
     assert post.get_title() == songs[0]['title']
     assert post.get_body() == body_startswith
 
-    # open update page for the latest post which this test has just created
+    # open update page for the latest post
     index_page.open_update_page_of_latest()
     update_post_page = UpdatePostPage(browser)
     assert update_post_page.save_button_exists()
@@ -96,11 +96,29 @@ def test_register_login_post(browser, credential):
     # save the updates
     update_post_page.do_save()
 
-    # verify if the post is present in the index page
+    # verify if the updated post is present in the index page
     post = index_page.get_post_latest()
     assert post is not None
     assert post.get_title() == songs[0]['title']
     assert post.get_body() == songs[0]['lyric']
+    the_post_id = post.get_postid()
 
+    # again, open update page for the latest post
+    index_page.open_update_page_of_latest()
+    update_post_page = UpdatePostPage(browser)
+    assert update_post_page.save_button_exists()
+    # delete this post
+    update_post_page.do_delete()
 
-    time.sleep(3)
+    # browser shows a javascript confirm dialog with OK|Cancel buttons
+    # we need to click OK
+    obj = browser.switch_to.alert
+    time.sleep(1)
+    obj.accept()
+    time.sleep(1)
+
+    # assert we are transferred to the index.html
+    assert index_page.posts_header_exists()
+
+    # assert the post is no longer there is the list
+    #assert index_page.get_post_by_postid(the_post_id) is None
