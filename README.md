@@ -563,7 +563,7 @@ $ tree .
 
 第二に Waitress。わたしは pywebappサブプロジェクトでFlaskフレームワークをベースとするWebアプリケーション flaskr を作った（正しくはTutorialのサンプルコードを写経しました）。そしてWebサーバ "Waitress" をコマンドラインで起動してそのなかで flaskr を動かそうとした。flaskr のPythonソースコードが srcディレクトリの下にあることを Waitress に教える必要があった。しかしその方法がついにわからなかった。[ドキュメント](https://docs.pylonsproject.org/projects/waitress/en/stable/runner.html) をみると "As of 0.8.6, the current directory is automatically included on sys.path."と書いてあった。つまりアプリケーションのパッケージがカレントディレクトリの直下にあれば問題は起きない。しかし `src` ディレクトリがあるとsys.pathのなかでアプリケーションのディレクトリが見つからなくなってしまう。Waitress は Pythonアプリがカレントディレクトリにあるという標準的なディレクトリ構造を前提していて、`src`ディレクトリが挟まっているイレギュラーなディレクトリ構造を想定していない。ここで手詰まりになった。
 
-結論：　Python世界ではプロジェクトの最上位ディレクトリの直下にアプリケーションのパッケージとしてのディレクトリ（たとえば `mypkg`）を配置するディレクトリ構造を採用すべきです。それ以外のディレクトリ構造にすると面倒がおきるばかり。やめておきましょう。
+結論：Python世界ではプロジェクトの最上位ディレクトリの直下にアプリケーションのパッケージとしてのディレクトリ（たとえば `mypkg`）を配置するディレクトリ構造を採用すべきです。それ以外のディレクトリ構造にすると面倒がおきるばかり。やめておきましょう。
 
 
 ### IntelliJ IDEAのなかのPythonプロジェクトに必要な設定をする
@@ -590,7 +590,9 @@ IDEAを起動しMyPythonProjectTemplateプロジェクトを開きます。*File
 - New Environment
 - Existing Environment
 
-のふたつの選択肢があることに注意せよ。New Environmentを選ぶとIDEAにたいしてPython仮想環境を新規に作れと要求することになる。しかしわれわれはコマンドラインで pipenv コマンドを用いて pycliappプロジェクト専用を仮想環境をすでに作成ずみだ。だからわれわれは Existing Evironmentのほうを選択すべきだ。
+のふたつの選択肢があることに注意せよ。New Environmentを選ぶとIDEAにたいしてPython仮想環境を新規に作れと要求することになる。しかしわれわれはコマンドラインで pipenv コマンドを用いて pycliappプロジェクト専用を仮想環境をすでに作成ずみだ。だからわれわれは Existing Environmentのほうを選択すべきだ。
+
+![13](docs/images/13_AddPythonInterpreter.png)
 
 pycliappプロジェクト専用に作ったPython仮想環境をPlatform SDKとしてIDEAに追加登録したいのですが、そのためにはその仮想環境のパスを調べておく必要があります。次のコマンドで調べられます。
 
@@ -602,21 +604,27 @@ $ pipenv --venv
 /Users/myname/.local/share/virtualenvs/pycliapp-32imfJAR
 ```
 
-*Existing Environment* の *Interpreter* に、Python仮想環境のディレクトリのなかにある pythonのバイナリのパスを入力します。
-
-![13](docs/images/13_AddPythonInterpreter.png)
-
-OKするとIDEAが数秒走って `Python 3.8 (pycliapp-32imfJAR)` みたいなという名前でPlatform SDKが追加されます。この名前ではどのプロジェクトのためにつくったものなのかわからない。`Python 3.8 (MyPythonProjectTemplate-pycliapp)` という名前に変更しておきましょう。
-
-#### IDEAのプロジェクトにProject SDKを設定する
-
-つぎに pycliappモジュールが参照すべきSDKを設定します。
-
-*Files > Project Structure...* でダイアログを開き、左メニューで *Project Settings > Modules*を選ぶ。するとこのプロジェクトのなかに含まれている３つのモジュール (pycliapp、pywebapp、pywebui)が一覧に表示される。pycliappモジュールをクリックして選択します。ダイアログの右側の領域にSourcesとDependenciesとふたつのタブがあって、初期にはSourcesが表示されているはず。Dependenciesタブをクリックしよう。すると Module SDK を設定する入力エリアが表示される。上記で追加した仮想環境(`Python 3.8 (MyPythonProjectTemplate-pycliapp)`)を設定してOKします。
+*Existing Environment* の *Interpreter* に、Python仮想環境のディレクトリのなかにある pythonのバイナリのパスを入力します。OKするとIDEAが数秒走って `Python 3.8 (pycliapp-32imfJAR)` みたいなという名前でPlatform SDKが追加されます。
 
 ![14](docs/images/14_AddPythonInterpreter_added.png)
 
+サブプロジェクト名 pycliapp- で始まるこの名前ではどのプロジェクトのために作った仮想環境なのかがわからない。そこでルートプロジェクト名 MyPythonProjectTemplate で始まる名前 たとえば `Python 3.8 (MyPythonProjectTemplate-pycliapp)` に変更しておきましょう。
+
+#### IDEAのプロジェクトにProject SDKを設定する
+
+つぎに pycliapp をはじめとするサブモジュールが参照すべきSDKを設定します。
+
+*Files > Project Structure...* でダイアログを開き、左メニューで *Project Settings > Modules*を選ぶ。するとこのプロジェクトのなかに含まれている３つのモジュール (pycliapp、pywebapp、pywebui)が一覧に表示される。pycliappモジュールをクリックして選択します。そして *Module SDK* として上記で追加した `Python 3.8 (MyPythonProjectTemplate-pycliapp)`を設定します。
+
+![15](docs/images/15_AssignModuleSDK.png)
+
 OKしましょう。これでIDEAの設定はできました。
+
+
+
+
+
+
 
 ### ユニットテストを実行する --- pytest
 
