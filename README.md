@@ -131,7 +131,7 @@ $ tree $ROOTPROJ
 >ここで「モジュール」という言葉を使ったがこれはIDEAが定義する用語としての「モジュール」である。Python言語が定義する「モジュール」ではない。混同しないよう気をつけよう。Python言語でモジュールとは `myapp.py` のように名前の末尾が `.py` のファイルのことだが、IDEAの用語法はまったく違う。
 
 >IntelliJ IDEAでマルチモジュールのプロジェクトを作るやり方を今回やっと見つけた。ふと思い出してはちょっと調べてもよくわからず放置するのを繰り返してもう１年以上経過した。わかってみれば簡単だったのだが。
- 
+
 3つのサブプロジェクトはそれぞれどういう内容のプロジェクトか？ 以下に概要を述べる。
 
 ### pycliappの概要
@@ -321,7 +321,7 @@ Using /usr/local/bin/python3.8 (3.8.5) to create virtualenv...
     added seed packages: pip==21.0.1, setuptools==52.0.0, wheel==0.36.2
   activators BashActivator,CShellActivator,FishActivator,PowerShellActivator,PythonActivator,XonshActivator
 
-✔ Successfully created virtual environment! 
+✔ Successfully created virtual environment!
 Virtualenv location: /Users/myname/.local/share/virtualenvs/pycliapp-TkLJRwmc
 Creating a Pipfile for this project...
 ```
@@ -351,13 +351,13 @@ $ pipenv install --dev pytest
 
 Installing pytest...
 Adding pytest to Pipfile's [packages]...
-✔ Installation Succeeded 
+✔ Installation Succeeded
 Pipfile.lock not found, creating...
 Locking [dev-packages] dependencies...
 Locking [packages] dependencies...
 Building requirements...
 Resolving dependencies...
-✔ Success! 
+✔ Success!
 Updated Pipfile.lock (a834da)!
 Installing dependencies from Pipfile.lock (a834da)...
   🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 0/0 — 00:00:00
@@ -472,7 +472,7 @@ DEBUG=1
 $ cd $SUBPROJ
 $ pipenv run python
 Loading .env environment variables...
-Python 3.8.5 (v3.8.5:580fbb018f, Jul 20 2020, 12:11:27) 
+Python 3.8.5 (v3.8.5:580fbb018f, Jul 20 2020, 12:11:27)
 [Clang 6.0 (clang-600.0.57)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import os
@@ -554,7 +554,7 @@ $ tree .
  └── test_greeting.py
 ```
 
-なぜ？ --- わたしはJavaプログラミングの経歴が長い。Mavenや[Gradleの流儀](https://docs.gradle.org/current/userguide/organizing_gradle_projects.html#sec:separate_language_source_files) どおりに、プロジェクトの最上位ディレクトリの下に `src` があるというディレクトリ構造に馴染んでいた。だから `src` が無いのが気に入らなかったからです。 
+なぜ？ --- わたしはJavaプログラミングの経歴が長い。Mavenや[Gradleの流儀](https://docs.gradle.org/current/userguide/organizing_gradle_projects.html#sec:separate_language_source_files) どおりに、プロジェクトの最上位ディレクトリの下に `src` があるというディレクトリ構造に馴染んでいた。だから `src` が無いのが気に入らなかったからです。
 
 ところがPythonプロジェクトの直下に `src` ディレクトリを作ろうとしてたくさんの問題に遭遇しました。どんな問題が起きたか？ たくさんあるのですが、ふたつメモしておきましょう。
 
@@ -611,7 +611,7 @@ OKするとIDEAが数秒走って `Python 3.8 (pycliapp-32imfJAR)` みたいな�
 
 つぎに pycliappモジュールが参照すべきSDKを設定します。
 
-*Files > Project Structure...* でダイアログを開き、左メニューで *Project Settings > Modules*を選ぶ。するとこのプロジェクトのなかに含まれている３つのモジュール (pycliapp、pywebapp、pywebui)が一覧に表示される。pycliappモジュールをクリックして選択します。そして *Module SDK* として上記で追加した `Python 3.8 (MyPythonProjectTemplate-pycliapp)`を設定します。
+*Files > Project Structure...* でダイアログを開き、左メニューで *Project Settings > Modules*を選ぶ。するとこのプロジェクトのなかに含まれている３つのモジュール (pycliapp、pywebapp、pywebui)が一覧に表示される。pycliappモジュールをクリックして選択します。ダイアログの右側の領域にSourcesとDependenciesとふたつのタブがあって、初期にはSourcesが表示されているはず。Dependenciesタブをクリックしよう。すると Module SDK を設定する入力エリアが表示される。上記で追加した仮想環境(`Python 3.8 (MyPythonProjectTemplate-pycliapp)`)を設定してOKします。
 
 ![14](docs/images/14_AddPythonInterpreter_added.png)
 
@@ -633,7 +633,7 @@ Loading .env environment variables...
 ============================= test session starts ==============================
 platform darwin -- Python 3.8.5, pytest-6.2.2, py-1.10.0, pluggy-0.13.1
 rootdir: /Users/kazuakiurayama/github/MyPythonProjectTemplate/pycliapp
-collected 1 item                                                               
+collected 1 item
 
 tests/test_greeting.py .                                                 [100%]
 
@@ -810,7 +810,7 @@ tests/test_blog.py                                                              
 tests/test_db.py                                                                                                                           19      0   100%
 tests/test_factory.py                                                                                                                       7      0   100%
 -------------------------------------------
-TOTAL                                      
+TOTAL
 ```
 
 coverageにHTML形式のレポートを生成させるにはこうする。
@@ -1147,7 +1147,7 @@ $ pipenv run pytest
 ===================== test session starts ======================
 platform darwin -- Python 3.8.5, pytest-6.2.2, py-1.10.0, pluggy-0.13.1
 rootdir: /Users/kazuakiurayama/github/MyPythonProjectTemplate/pywebui
-collected 10 items                                             
+collected 10 items
 
 tests/test_duckduckgo_pageobject.py .                    [ 10%]
 tests/test_duckduckgo_web.py s                           [ 20%]
@@ -1214,4 +1214,4 @@ $ pipenv run pytest
 
 [GitHubの本プロジェクトのREADME](https://github.com/kazurayam/MultipleModulesProjectTemplate) に目次(Table of Contents)をつけた。下記のページを参考にして実現した。
 
-- [[GitHub]README.mdの目次生成をAction「tgit oc-generator」による自動化で楽しよう](https://dev.classmethod.jp/articles/auto-generate-toc-on-readme-by-actions/)
+- [[GitHub]README.mdの目次生成をAction「tgit ¡¡oc-generator」による自動化で楽しよう](https://dev.classmethod.jp/articles/auto-generate-toc-on-readme-by-actions/)
