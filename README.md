@@ -286,6 +286,7 @@ $ROOTPROJディレクトリの直下に `pycliapp` ディレクトリを作り�
 ```
 $ cd $ROOTPROJ
 $ mkdir pycliapp
+$ cd pycliapp
 $ export $SUBPROJ=$(pwd)
 ```
 
