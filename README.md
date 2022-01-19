@@ -892,7 +892,7 @@ $ pipenv run python setup.py bdist_wheel
 ```
 $ cd $SUBZPROJ
 $ ls dist
-flaskr_kazurayam-1.0.3-py3-none-any.whl
+flaskr_kazurayam-1.1.0-py3-none-any.whl
 ```
 
 このとおり、distディレクトリのなかに名前の末尾が `.whl` のファイルができた。 flask_kazurayam のライブラリが作られました。
@@ -1031,10 +1031,10 @@ IPポートの対応付けを次のようにした。
 
 ```
 $ cd $SUBPROJ
-$ docker build --tag kazurayam/flaskr-kazurayam:1.0.3 .
+$ docker build --tag kazurayam/flaskr-kazurayam:1.1.0 .
 ...
 Successfully built feb927092f61
-Successfully tagged kazurayam/flaskr-kazurayam:1.0.3
+Successfully tagged kazurayam/flaskr-kazurayam:1.1.0
 ```
 
 かなりたくさんのメッセージが出力されたあとDockerイメージが生成されてローカルディスクに保存されたのがわかる。
@@ -1045,7 +1045,7 @@ Successfully tagged kazurayam/flaskr-kazurayam:1.0.3
 ```
 $ docker image ls
 REPOSITORY                       TAG          IMAGE ID       CREATED         SIZE
-kazurayam/flaskr-kazurayam       1.0.3        feb927092f61   3 minutes ago   174MB
+kazurayam/flaskr-kazurayam       1.1.0        feb927092f61   3 minutes ago   174MB
 ...
 ```
 
@@ -1061,7 +1061,7 @@ kazurayam/flaskr-kazurayam       1.0.3        feb927092f61   3 minutes ago   174
 
 ```
 $ cd ~/tmp
-$ docker run -it -p 80:8080 --rm kazurayam/flaskr-kazurayam:1.0.3
+$ docker run -it -p 80:8080 --rm kazurayam/flaskr-kazurayam:1.1.0
 Serving on http://0.0.0.0:8080
 ```
 
@@ -1087,7 +1087,7 @@ Login Succeeded
 DockerHubにイメージをpushする
 
 ```
-$ docker push kazurayam/flaskr-kazurayam:1.0.3
+$ docker push kazurayam/flaskr-kazurayam:1.1.0
 ```
 
 https://hub.docker.com/ をみればイメージがアップされたのがわかる。
@@ -1115,7 +1115,7 @@ navバーの左端にロゴ画像が挿入されているのに注目してほ�
 
 ```
 $ cd ~/tmp
-$ docker run -it -p 3000:8080 -e FLASKR_ALT_VIEW="true" --rm kazurayam/flaskr-kazurayam:1.0.3
+$ docker run -it -p 3000:8080 -e FLASKR_ALT_VIEW="true" --rm kazurayam/flaskr-kazurayam:1.1.0
 Serving on http://0.0.0.0:8080
 ```
 
@@ -1238,7 +1238,7 @@ Dockerコンテナを再起動すればflaskrのdbが初期化されるのでそ
 pywebappサブプロジェクトでflaskrを動かすDockerイメージを作った。このDockerイメージを使ってローカルにflaskrを起動する。
 ```
 $ cd ~/tmp
-$ docker run -it -p 80:8080 --rm kazurayam/flaskr-kazurayam:1.0.3
+$ docker run -it -p 80:8080 --rm kazurayam/flaskr-kazurayam:1.1.0
 ```
 
 すると
