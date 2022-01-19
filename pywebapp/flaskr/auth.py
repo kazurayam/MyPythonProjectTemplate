@@ -37,6 +37,8 @@ def register():
 
         flash(error)
 
+        g.alternative_view = True
+
     return render_template('auth/register.html')
 
 

@@ -2,6 +2,11 @@
 <title>{% block title %}{% endblock %} - Flaskr</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <nav>
+
+    {% if config.alt_view %}
+    <img style="width:16px; margin-right: 8px;" src="{{ url_for('static', filename='pngfind.com-python-logo-png-1044449.png')}}" alt="logo"></img>
+    {% endif %}
+
     <h1>Flaskr</h1>
     <ul>
         {% if g.user %}

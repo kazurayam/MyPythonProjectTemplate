@@ -772,7 +772,7 @@ $ pipenv run flask run
 
 ブラウザで http://127.0.0.1:5000/ にアクセスすればこのサーバにアクセスすることができます。
 
-![20](docs/images/20_flakr_in_action.png)
+![20](docs/images/20_flaskr_in_action.png)
 
 ### Pipfileにスクリプトを書いて起動を簡単にする
 
@@ -1093,6 +1093,43 @@ $ docker push kazurayam/flaskr-kazurayam:1.0.3
 https://hub.docker.com/ をみればイメージがアップされたのがわかる。
 
 ![40](docs/images/40_DockerImageInDockerHub.png)
+
+
+### 画面デザインがちょっとだけ違うFlaskrを起動する
+
+Flaskrの画面はデフォルトではこういう見た目だ。
+
+![original view](./docs/images/20_flaskr_in_action.png)
+
+Flaskrを起動するときにちょっと細工することにより、下記のような見た目に取り替えることができる。
+
+![alt view](./docs/images/21_flaskr_with_logo.png)
+
+navバーの左端にロゴ画像が挿入されているのに注目してほしい。違いはここだけだ。ただしnavバーはFlaskrアプリの全ての画面に含まれるので、結果的には全部の画面がちょっとだけ違う見た目になる。 元の画面を「本番環境」、ロゴ画像が挿入されている画面を「開発環境」と見立てることができる。
+
+私はWebサイトの画面確認作業を省力化するツール [Visual Inspection](https://forum.katalon.com/t/visual-inspection-in-katalon-studio-reborn/57440) を開発した。このツールのTwinsモードをテストしたりデモするためには、一つWebアプリの本番環境のようなものと開発環境のようなもの一対が必要だった。その一対を作るのにFaskrが使える。
+
+#### dockerコンテナから起動する場合
+
+ブラウザが http://127.0.0.1:3000/ にアクセスすればaltenative viewが見られるようにしよう。
+
+```
+$ cd ~/tmp
+$ docker run -it -p 3000:8080 -e FLASKR_ALT_VIEW="true" --rm kazurayam/flaskr-kazurayam:1.0.3
+Serving on http://0.0.0.0:8080
+```
+
+-pオプションでポート番号を指定し、-eオプションで環境変数を指定している。
+
+
+#### pipenvで起動する場合
+
+```
+$ export FLASKR_ALT_VIEW=true
+$ pipenv run flaskrun -p 3000
+```
+
+まずシェルのexportコマンドで環境変数を追加している。そしてpipenv runに -p 3000 によってポート番号を指定している。
 
 ---------------------------------------------------------
 ## pywebuiの説明

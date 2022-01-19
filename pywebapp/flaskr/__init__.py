@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, g
 
 
 def create_app(test_config=None):
@@ -38,5 +38,8 @@ def create_app(test_config=None):
     from . import blog
     app.register_blueprint(blog.bp)
     app.add_url_rule('/', endpoint='index')
+
+    if os.getenv("FLASKR_ALT_VIEW"):
+        app.config['alt_view'] = True
 
     return app
