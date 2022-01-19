@@ -1029,8 +1029,7 @@ IPポートの対応付けを次のようにした。
 #### Docker イメージを作る
 
 `docker build`コマンドでイメージを作る。コマンドの形式は
-- `docker build --tag <DockHubアカウント名>/<パッケージ名>:<バージョン> <Dockerfileのある
-> ディレクトリ>`
+- `docker build --tag <DockHubアカウント名>/<パッケージ名>:<バージョン> <Dockerfileのあるディレクトリ>`
 
 ```
 $ cd $SUBPROJ
@@ -1064,7 +1063,7 @@ kazurayam/flaskr-kazurayam       1.1.0        feb927092f61   3 minutes ago   174
 
 ```
 $ cd ~/tmp
-$ docker run -it -p 80:8080 --rm kazurayam/flaskr-kazurayam:1.1.0
+$ docker run -it -p 80:8080 kazurayam/flaskr-kazurayam:1.1.0
 Serving on http://0.0.0.0:8080
 ```
 
@@ -1118,7 +1117,7 @@ navバーの左端にロゴ画像が挿入されているのに注目してほ�
 
 ```
 $ cd ~/tmp
-$ docker run -it -p 3000:8080 -e FLASKR_ALT_VIEW="true" --rm kazurayam/flaskr-kazurayam:1.1.0
+$ docker run -it -p 3000:8080 -e FLASKR_ALT_VIEW="true" kazurayam/flaskr-kazurayam:1.1.0
 Serving on http://0.0.0.0:8080
 ```
 
@@ -1241,7 +1240,7 @@ Dockerコンテナを再起動すればflaskrのdbが初期化されるのでそ
 pywebappサブプロジェクトでflaskrを動かすDockerイメージを作った。このDockerイメージを使ってローカルにflaskrを起動する。
 ```
 $ cd ~/tmp
-$ docker run -it -p 80:8080 --rm kazurayam/flaskr-kazurayam:1.1.0
+$ docker run -it -p 80:8080 kazurayam/flaskr-kazurayam:1.1.0
 ```
 
 すると
