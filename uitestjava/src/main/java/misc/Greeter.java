@@ -1,4 +1,4 @@
-package flaskrtest;
+package misc;
 
 public class Greeter {
 
