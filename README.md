@@ -14,7 +14,7 @@
   - [IntelliJ IDEAでマルチモジュールなプロジェクトを作った](#intellij-idea%E3%81%A7%E3%83%9E%E3%83%AB%E3%83%81%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AA%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E4%BD%9C%E3%81%A3%E3%81%9F)
   - [pycliappの概要](#pycliapp%E3%81%AE%E6%A6%82%E8%A6%81)
   - [pywebappの概要](#pywebapp%E3%81%AE%E6%A6%82%E8%A6%81)
-  - [pywebuiの概要](#pywebui%E3%81%AE%E6%A6%82%E8%A6%81)
+  - [uitestpyの概要](#uitestpy%E3%81%AE%E6%A6%82%E8%A6%81)
   - [記号ROOTPROJの定義](#%E8%A8%98%E5%8F%B7rootproj%E3%81%AE%E5%AE%9A%E7%BE%A9)
 - [pycliappの説明](#pycliapp%E3%81%AE%E8%AA%AC%E6%98%8E)
   - [Python処理系をmacOSにインストールする](#python%E5%87%A6%E7%90%86%E7%B3%BB%E3%82%92macos%E3%81%AB%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B)
@@ -74,8 +74,8 @@
   - [画面デザインがちょっとだけ違うFlaskrを起動する](#%E7%94%BB%E9%9D%A2%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E3%81%8C%E3%81%A1%E3%82%87%E3%81%A3%E3%81%A8%E3%81%A0%E3%81%91%E9%81%95%E3%81%86flaskr%E3%82%92%E8%B5%B7%E5%8B%95%E3%81%99%E3%82%8B)
     - [dockerコンテナから起動する場合](#docker%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E3%81%8B%E3%82%89%E8%B5%B7%E5%8B%95%E3%81%99%E3%82%8B%E5%A0%B4%E5%90%88)
     - [pipenvで起動する場合](#pipenv%E3%81%A7%E8%B5%B7%E5%8B%95%E3%81%99%E3%82%8B%E5%A0%B4%E5%90%88)
-- [pywebuiの説明](#pywebui%E3%81%AE%E8%AA%AC%E6%98%8E)
-  - [pywebuiサブプロジェクトを準備する](#pywebui%E3%82%B5%E3%83%96%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E6%BA%96%E5%82%99%E3%81%99%E3%82%8B)
+- [uitestpyの説明](#uitestpy%E3%81%AE%E8%AA%AC%E6%98%8E)
+  - [uitestpyサブプロジェクトを準備する](#uitestpy%E3%82%B5%E3%83%96%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E6%BA%96%E5%82%99%E3%81%99%E3%82%8B)
     - [目標を設定する](#%E7%9B%AE%E6%A8%99%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B)
     - [記号 SUBPROJ の定義](#%E8%A8%98%E5%8F%B7-subproj-%E3%81%AE%E5%AE%9A%E7%BE%A9-2)
     - [仮想環境を準備する](#%E4%BB%AE%E6%83%B3%E7%92%B0%E5%A2%83%E3%82%92%E6%BA%96%E5%82%99%E3%81%99%E3%82%8B)
@@ -112,7 +112,7 @@ $ tree $ROOTPROJ
 .
 ├── pycliapp
 ├── pywebapp
-└── pywebuitest
+└── uitestpy
 ```
 
 >なお上記で `ROOTPROJ` という記号を用いていた。これは本レポジトリをわたしのPCのローカルディスクにcloneすることによって作られたディレクトリ（たとえば `~/github/MultipleModulesProjectTemplate`）を表します。
@@ -130,7 +130,7 @@ $ tree $ROOTPROJ
 この記事から下記のことを習った。
 
 1. IDEAで$ROOTPROJディレクトリにNew Projectを作るとき **Empty Project** を選択する。
-1. IDEAで MultipleModulesProjectTemplate プロジェクトが開いたら、*File > Project Structure* でプロジェクトの構造を設定するダイアログを開く。メニューから *Project Settings > Modules* を選択する。Moduleを＋（追加）する。`pycliapp`モジュールを＋し、`pywebapp`モジュールを＋し、`pywebuitest`モジュールを＋する。これでサブプロジェクトが３つできる。
+1. IDEAで MultipleModulesProjectTemplate プロジェクトが開いたら、*File > Project Structure* でプロジェクトの構造を設定するダイアログを開く。メニューから *Project Settings > Modules* を選択する。Moduleを＋（追加）する。`pycliapp`モジュールを＋し、`pywebapp`モジュールを＋し、`uitestpy`モジュールを＋する。これでサブプロジェクトが３つできる。
 
 >ここで「モジュール」という言葉を使ったがこれはIDEAが定義する用語としての「モジュール」である。Python言語が定義する「モジュール」ではない。混同しないよう気をつけよう。Python言語でモジュールとは `myapp.py` のように名前の末尾が `.py` のファイルのことだが、IDEAの用語法はまったく違う。
 
@@ -163,7 +163,7 @@ $ tree $ROOTPROJ
 
 詳細は[pywebappの説明](#pywebappの説明)を参照のこと
 
-### pywebuiの概要
+### uitestpyの概要
 
 pywebappのサーバがブラウザに応答したWebページをテストする自動化テストをこのサブプロジェクトで開発します。
 
@@ -171,7 +171,7 @@ pywebappのサーバがブラウザに応答したWebページをテストする
 1. [Selenium](https://selenium-python.readthedocs.io/) を用いたPythonプログラムを開発してWebページをテストします。
 1. Page Object Model のデザインを用いてテストコードを設計します。
 
-詳細は[pywebuiの説明](#pywebuiの説明)を参照のこと
+詳細は[uitestpyの説明](#uitestpyの説明)を参照のこと
 
 ### 記号ROOTPROJの定義
 
@@ -574,7 +574,7 @@ $ tree .
 
 このレポジトリをIntelliJ IDEAでEmpty Projectとして作り、そのなかに包含される形で pycliapp をはじめとする３つのディレクトリをつくりました。IDEA用語でいえば「モジュール」を３つ作りました。そのあとコマンドラインで pipenvコマンドを実行して pycliappモジュール専用のPython仮想環境をつくりpytestなど外部依存ライブラリをインストールしました。ところがまだIDEAにはまだなんの設定も加えていません。だからIDEAでpycliappモジュールを開いたときにそれ専用の仮想環境を使うように設定できていません。
 
-Anacondaにはnumpyを膨大な数のライブラリがすでにバンドルされています。pytestもバンドルされています。ところがあとで pywebuiプロジェクトが使う [selenium](https://selenium-python.readthedocs.io/) はAnacondaに含まれていません。だからサブプロジェクト専用のPython仮想環境に selenium を追加インストールするでしょう。そしてIDEAでpywebuiを開いたときに専用の仮想環境を指定してプロジェクトを実行できるよう設定しておく必要があります。
+Anacondaにはnumpyを膨大な数のライブラリがすでにバンドルされています。pytestもバンドルされています。ところがあとで uitestpyプロジェクトが使う [selenium](https://selenium-python.readthedocs.io/) はAnacondaに含まれていません。だからサブプロジェクト専用のPython仮想環境に selenium を追加インストールするでしょう。そしてIDEAでuitestpyを開いたときに専用の仮想環境を指定してプロジェクトを実行できるよう設定しておく必要があります。
 
 IDEAでPythonモジュールの処理系を設定する作業は二段階を踏みます。第一に 仮想環境を追加するたびに、IDEAにとってPlatform SDK のひとつとして登録してやります。第二に pycliappはじめ各プロジェクトにたいして Project SDKとしてPlatform SDKをひとつ選択してアサインします。各プロジェクト専用に準備した仮想環境を正しく選択して各プロジェクトのProject SDKにアサインします。
 
@@ -618,7 +618,7 @@ $ pipenv --venv
 
 つぎに pycliapp をはじめとするサブモジュールが参照すべきSDKを設定します。
 
-*Files > Project Structure...* でダイアログを開き、左メニューで *Project Settings > Modules*を選ぶ。するとこのプロジェクトのなかに含まれている３つのモジュール (pycliapp、pywebapp、pywebui)が一覧に表示される。pycliappモジュールをクリックして選択します。そして *Module SDK* として上記で追加した `Python 3.8 (MyPythonProjectTemplate-pycliapp)`を設定します。
+*Files > Project Structure...* でダイアログを開き、左メニューで *Project Settings > Modules*を選ぶ。するとこのプロジェクトのなかに含まれている３つのモジュール (pycliapp、pywebapp、uitestpy)が一覧に表示される。pycliappモジュールをクリックして選択します。そして *Module SDK* として上記で追加した `Python 3.8 (MyPythonProjectTemplate-pycliapp)`を設定します。
 
 ![15](docs/images/15_AssignModuleSDK.png)
 
@@ -1134,16 +1134,16 @@ $ pipenv run flaskrun -p 3000
 まずシェルのexportコマンドで環境変数を追加している。そしてpipenv runに -p 3000 によってポート番号を指定している。
 
 ---------------------------------------------------------
-## pywebuiの説明
+## uitestpyの説明
 
-概要は[pywebuiの概要](#pywebuiの概要)を参照のこと。
+概要は[uitestpyの概要](#uitestpyの概要)を参照のこと。
 
-### pywebuiサブプロジェクトを準備する
+### uitestpyサブプロジェクトを準備する
 
 pywebappサブプロジェクトを作り終えて http://localhost:80/ が立ち上がったことを前提とする。
 このURLが提供する一連のWebページをSeleniumで自動化テスト一式を開発する。
 
-pywebuiはあくまで開発ツールなので、pipでライブラリ化する必要はないし、Dockerコンテナで動かす必要もない。
+uitestpyはあくまで開発ツールなので、pipでライブラリ化する必要はないし、Dockerコンテナで動かす必要もない。
 
 #### 目標を設定する
 
@@ -1152,13 +1152,13 @@ FlaskのTutorialドキュメントに [Test Coverage](https://flask.palletsproje
 #### 記号 SUBPROJ の定義
 
 ```
-$ cd ~/github/MyPythonProjecTemplate/pywebui
+$ cd ~/github/MyPythonProjecTemplate/uitestpy
 $ export SUBPROJ=$(pwd)
 ```
 
 #### 仮想環境を準備する
 
-pywebuiサブプロジェクトのために次の作業をする。
+uitestpyサブプロジェクトのために次の作業をする。
 
 - Python仮想環境を作る
 - IntelliJ IDEAでSDKを設定する
@@ -1182,7 +1182,7 @@ Seleniumを動かすPythonプログラムをどうやって書くか？入門す
 
 - [TestProject / Develop Page Object Selenium Tests Using Python](https://blog.testproject.io/2019/07/16/develop-page-object-selenium-tests-using-python/)
 
-この記事のサンプルコードを pywebui プロジェクトのなかに写経した。
+この記事のサンプルコードを uitestpy プロジェクトのなかに写経した。
 
 
 #### Seleniumテストを実行する
@@ -1195,7 +1195,7 @@ $ pipenv run pytest
 
 ===================== test session starts ======================
 platform darwin -- Python 3.8.5, pytest-6.2.2, py-1.10.0, pluggy-0.13.1
-rootdir: /Users/kazuakiurayama/github/MyPythonProjectTemplate/pywebui
+rootdir: /Users/kazuakiurayama/github/MyPythonProjectTemplate/uitestpy
 collected 10 items
 
 tests/test_duckduckgo_pageobject.py .                    [ 10%]
@@ -1205,7 +1205,7 @@ tests/test_math.py .s......                              [100%]
 ================= 8 passed, 2 skipped in 7.40s =================
 ```
 
-[pywebui/tests/test_duckduckgo.py](pywebui/tests/test_duckduckgo.py) のなかにこう書いてある。
+[uitestpy/tests/test_duckduckgo.py](uitestpy/tests/test_duckduckgo.py) のなかにこう書いてある。
 
 ```
 # @pytest.mark.skip(reason="DuckDuckGoのテストをわざとスキップする")
@@ -1217,7 +1217,7 @@ def test_basic_duckduckgo_search(browser):
 
 #### 自作のWebアプリ flaskr をテストするSeleniumテストを書く
 
-- [pywebui/tests/test_flaskr.py](pywebui/tests/test_flaskr.py)
+- [uitestpy/tests/test_flaskr.py](uitestpy/tests/test_flaskr.py)
 
 このテストは下記のテストをする。Seleniumを使って。
 
@@ -1249,10 +1249,10 @@ $ docker run -it -p 80:8080 kazurayam/flaskr-kazurayam:1.1.0
 
 がアクセスできるようになる。
 
-pywebuiのSeleniumテストを起動するにはこうやる。
+uitestpyのSeleniumテストを起動するにはこうやる。
 
 ```
-$ cd ~/github/MyPythonProjectTemplate/pywebui
+$ cd ~/github/MyPythonProjectTemplate/uitestpy
 $ pipenv run pytest
 ```
 
