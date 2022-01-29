@@ -1,4 +1,4 @@
-package com.kazurayam.flaskrseleniumtest
+package flaskrtest
 
 import org.junit.jupiter.api.Test
 

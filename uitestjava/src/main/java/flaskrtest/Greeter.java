@@ -1,4 +1,4 @@
-package com.kazurayam.flaskrseleniumtest;
+package flaskrtest;
 
 public class Greeter {
 
