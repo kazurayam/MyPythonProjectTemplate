@@ -1,4 +1,4 @@
-package flaskrtest;
+package flaskr.selenium;
 
 import com.kazurayam.subprocessj.docker.ContainerFinder;
 import com.kazurayam.subprocessj.docker.ContainerFinder.ContainerFindingResult;

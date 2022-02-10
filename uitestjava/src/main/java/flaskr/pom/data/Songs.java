@@ -1,4 +1,4 @@
-package flaskrtest.data;
+package flaskr.pom.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;

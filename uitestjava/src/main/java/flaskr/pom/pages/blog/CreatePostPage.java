@@ -1,4 +1,4 @@
-package flaskrtest.pages.blog;
+package flaskr.pom.pages.blog;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

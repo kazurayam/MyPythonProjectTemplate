@@ -1,9 +1,9 @@
-package flaskrtest.actions;
+package flaskr.pom.actions;
 
-import flaskrtest.data.Song;
-import flaskrtest.data.User;
-import flaskrtest.pages.blog.CreatePostPage;
-import flaskrtest.pages.blog.IndexPage;
+import flaskr.pom.pages.blog.CreatePostPage;
+import flaskr.pom.pages.blog.IndexPage;
+import flaskr.pom.data.Song;
+import flaskr.pom.data.User;
 import org.openqa.selenium.WebDriver;
 
 import java.net.URL;

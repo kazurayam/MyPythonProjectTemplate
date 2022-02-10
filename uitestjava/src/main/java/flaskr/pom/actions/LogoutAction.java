@@ -1,6 +1,6 @@
-package flaskrtest.actions;
+package flaskr.pom.actions;
 
-import flaskrtest.pages.blog.IndexPage;
+import flaskr.pom.pages.blog.IndexPage;
 import org.openqa.selenium.WebDriver;
 
 import java.net.URL;

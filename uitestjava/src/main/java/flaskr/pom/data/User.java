@@ -1,4 +1,4 @@
-package flaskrtest.data;
+package flaskr.pom.data;
 
 public enum User {
 

@@ -1,4 +1,4 @@
-package flaskrtest.pages.blog;
+package flaskr.pom.pages.blog;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

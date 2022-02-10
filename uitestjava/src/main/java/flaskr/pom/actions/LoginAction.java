@@ -1,9 +1,9 @@
-package flaskrtest.actions;
+package flaskr.pom.actions;
 
-import flaskrtest.data.User;
-import flaskrtest.pages.auth.LogInPage;
-import flaskrtest.pages.auth.RegisterCredentialPage;
-import flaskrtest.pages.blog.IndexPage;
+import flaskr.pom.pages.auth.RegisterCredentialPage;
+import flaskr.pom.pages.blog.IndexPage;
+import flaskr.pom.data.User;
+import flaskr.pom.pages.auth.LogInPage;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

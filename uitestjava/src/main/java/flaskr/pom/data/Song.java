@@ -1,4 +1,4 @@
-package flaskrtest.data;
+package flaskr.pom.data;
 
 import com.google.gson.Gson;
 

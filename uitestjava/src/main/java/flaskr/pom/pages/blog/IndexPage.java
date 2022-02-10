@@ -1,6 +1,6 @@
-package flaskrtest.pages.blog;
+package flaskr.pom.pages.blog;
 
-import flaskrtest.data.User;
+import flaskr.pom.data.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

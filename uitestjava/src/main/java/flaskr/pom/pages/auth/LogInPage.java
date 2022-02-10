@@ -1,4 +1,4 @@
-package flaskrtest.pages.auth;
+package flaskr.pom.pages.auth;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
