@@ -1,21 +1,17 @@
 package flaskrtest.pages.auth
 
-import org.openqa.selenium.By as SeleniumBy
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 
-import com.kazurayam.ks.testobject.By
-import com.kms.katalon.core.testobject.TestObject
-import com.kms.katalon.core.webui.driver.DriverFactory
-import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
+import org.openqa.selenium.By
 
 public class RegisterCredentialPage {
 
-	static final TestObject USERNAME_INPUT  = By.id('username')
-	static final TestObject PASSWORD_INPUT  = By.id('password')
-	static final TestObject REGISTER_BUTTON = By.xpath('//input[@type="submit" and @value="Register"]')
-	static final TestObject LOGIN_ANCHOR    = By.xpath('//a[contains(text(), "Log In")]')
-	static final SeleniumBy DIV_FLASH       = SeleniumBy.xpath('//div[contains(@class, "flash")]')
+	static final By USERNAME_INPUT  = By.id('username')
+	static final By PASSWORD_INPUT  = By.id('password')
+	static final By REGISTER_BUTTON = By.xpath('//input[@type="submit" and @value="Register"]')
+	static final By LOGIN_ANCHOR    = By.xpath('//a[contains(text(), "Log In")]')
+	static final By DIV_FLASH       = By.xpath('//div[contains(@class, "flash")]')
 
 	private WebDriver browser
 
@@ -24,8 +20,7 @@ public class RegisterCredentialPage {
 	}
 
 	public Boolean register_button_exists() {
-		DriverFactory.changeWebDriver(browser)
-		WebElement register_button = WebUI.findWebElement(REGISTER_BUTTON)
+		WebElement register_button = browser.findElement(REGISTER_BUTTON)
 		return register_button != null
 	}
 
@@ -35,28 +30,27 @@ public class RegisterCredentialPage {
 	}
 
 	void type_username(String username) {
-		DriverFactory.changeWebDriver(browser)
-		WebUI.sendKeys(USERNAME_INPUT, username)
+		WebElement e = browser.findElement(USERNAME_INPUT)
+		e.sendKeys(username)
 	}
 
 	void type_password(String password) {
-		DriverFactory.changeWebDriver(browser)
-		WebUI.sendKeys(PASSWORD_INPUT, password)
+		WebElement e = browser.findElement(PASSWORD_INPUT)
+		e.sendKeys(password)
 	}
 
 	void do_register() {
-		DriverFactory.changeWebDriver(browser)
-		WebUI.click(REGISTER_BUTTON)
+		WebElement e = browser.findElement(REGISTER_BUTTON)
+		e.click()
 	}
 
 	void do_login() {
-		DriverFactory.changeWebDriver(browser)
-		WebUI.click(LOGIN_ANCHOR)
+		WebElement e = browser.findElement(LOGIN_ANCHOR)
+		e.click()
 	}
 
 	URL get_url() {
-		DriverFactory.changeWebDriver(browser)
-		String url = WebUI.getUrl()
+		String url = browser.getCurrentUrl()
 		return new URL(url)
 	}
 }

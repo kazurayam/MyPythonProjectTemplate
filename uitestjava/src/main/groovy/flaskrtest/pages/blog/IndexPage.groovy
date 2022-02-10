@@ -1,38 +1,36 @@
 package flaskrtest.pages.blog
 
+import org.openqa.selenium.support.ui.WebDriverWait
+
 import java.util.stream.Collectors
 
-import org.openqa.selenium.By as SeleniumBy
+import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
+import org.openqa.selenium.support.ui.ExpectedConditions
 
-import com.kazurayam.ks.testobject.By
-import com.kms.katalon.core.testobject.TestObject
-import com.kms.katalon.core.webui.driver.DriverFactory
-import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 
 import flaskrtest.data.User
 
 class IndexPage {
 
-	static final String URL = 'http://127.0.0.1:80/'
-	static final TestObject APP_HEADER      = By.xpath('//h1[contains(text(),"Flaskr")]')
-	static final TestObject REGISTER_ANCHOR = By.xpath('//a[contains(text(), "Register")]')
-	static final TestObject LOGIN_ANCHOR    = By.xpath('//a[contains(text(), "Log In")]')
-	static final TestObject LOGOUT_ANCHOR   = By.xpath('//a[contains(text(), "Log Out")]')
-	static final TestObject POSTS_HEADER    = By.xpath('//h1[contains(text(), "Posts")]')
-	static final TestObject NEW_ANCHOR      = By.xpath('//a[contains(text(), "New")]')
-	static final TestObject POSTS           = By.xpath('//article[@class="post"]')
+	static final By APP_HEADER      = By.xpath('//h1[contains(text(),"Flaskr")]')
+	static final By REGISTER_ANCHOR = By.xpath('//a[contains(text(), "Register")]')
+	static final By LOGIN_ANCHOR    = By.xpath('//a[contains(text(), "Log In")]')
+	static final By LOGOUT_ANCHOR   = By.xpath('//a[contains(text(), "Log Out")]')
+	static final By POSTS_HEADER    = By.xpath('//h1[contains(text(), "Posts")]')
+	static final By NEW_ANCHOR      = By.xpath('//a[contains(text(), "New")]')
+	static final By POSTS           = By.xpath('//article[@class="post"]')
 	static final int TIMEOUT = 3
 
 	/**
 	 * @param index 1,2,3, ...
 	 */
-	static final TestObject POST_BY_INDEX(int index) {
+	static final By POST_BY_INDEX(int index) {
 		return By.xpath("//article[@class='post' and position()=${index}]")
 	}
 
-	static final TestObject POST_BY_POSTID(String id) {
+	static final By POST_BY_POSTID(String id) {
 		return By.xpath("//article[@class='post']/header/a[starts-with(@href, '/${id}')]/ancestor::article")
 	}
 
@@ -42,91 +40,83 @@ class IndexPage {
 		this.browser = browser
 	}
 
-	void load() {
-		DriverFactory.changeWebDriver(browser)
-		WebUI.navigateToUrl(URL)
-	}
-
 	void load(URL url) {
-		DriverFactory.changeWebDriver(browser)
-		WebUI.navigateToUrl(url.toExternalForm())
+		browser.navigate().to(url.toExternalForm())
 	}
 
 	void open_register_page() {
-		DriverFactory.changeWebDriver(browser)
-		WebUI.click(REGISTER_ANCHOR)
+		WebElement e = browser.findElement(REGISTER_ANCHOR)
+		e.click()
 	}
 
 	void open_login_page() {
-		DriverFactory.changeWebDriver(browser)
-		WebUI.click(LOGIN_ANCHOR)
+		WebElement e = browser.findElement(LOGIN_ANCHOR)
+		e.click()
 	}
 
 	void click_logout() {
-		DriverFactory.changeWebDriver(browser)
-		WebUI.click(LOGOUT_ANCHOR)
+		WebElement e = browser.findElement(LOGOUT_ANCHOR)
+		e.click()
 	}
 
 	Boolean app_header_exists() {
-		DriverFactory.changeWebDriver(browser)
-		return WebUI.waitForElementPresent(APP_HEADER, TIMEOUT)
+		WebDriverWait wait= new WebDriverWait(browser, TIMEOUT);
+		return wait.until(ExpectedConditions.elementToBeClickable(APP_HEADER));
 	}
 
 	Boolean register_anchor_exists() {
-		DriverFactory.changeWebDriver(browser)
-		return WebUI.waitForElementPresent(REGISTER_ANCHOR, TIMEOUT)
+		WebDriverWait wait= new WebDriverWait(browser, TIMEOUT);
+		return wait.until(ExpectedConditions.elementToBeClickable(REGISTER_ANCHOR));
 	}
 
 	Boolean login_anchor_exists() {
-		DriverFactory.changeWebDriver(browser)
-		return WebUI.waitForElementPresent(LOGIN_ANCHOR, TIMEOUT)
+		WebDriverWait wait = new WebDriverWait(browser, TIMEOUT);
+		return wait.until(ExpectedConditions.elementToBeClickable(LOGIN_ANCHOR));
 	}
 
 	Boolean logout_anchor_exists() {
-		DriverFactory.changeWebDriver(browser)
-		return WebUI.waitForElementPresent(LOGOUT_ANCHOR, TIMEOUT)
+		WebDriverWait wait = new WebDriverWait(browser, TIMEOUT);
+		return wait.until(ExpectedConditions.elementToBeClickable(LOGOUT_ANCHOR));
 	}
 
 	Boolean posts_header_exists() {
-		DriverFactory.changeWebDriver(browser)
-		return WebUI.waitForElementPresent(POSTS_HEADER, TIMEOUT)
+		WebDriverWait wait = new WebDriverWait(browser, TIMEOUT);
+		return wait.until(ExpectedConditions.elementToBeClickable(POSTS_HEADER));
 	}
 
 	Boolean nav_span_username_exists(String username) {
-		DriverFactory.changeWebDriver(browser)
-		TestObject tObj =
-				By.xpath("//nav/ul/li/span[text()='${username}']", ["username": username])
+		WebDriverWait wait = new WebDriverWait(browser, TIMEOUT);
+		By by = By.xpath("//nav/ul/li/span[text()='${username}']")
+		return wait.until(ExpectedConditions.elementToBeClickable(by));
 	}
 
 	void open_create_post_page() {
-		DriverFactory.changeWebDriver(browser)
-		WebUI.click(NEW_ANCHOR)
+		WebElement e = browser.findElement(NEW_ANCHOR)
+		e.click()
 	}
 
 	int get_posts_count() {
-		List<WebElement> posts = WebUI.findWebElements(POSTS, TIMEOUT)
+		List<WebElement> posts = browser.findElements(POSTS)
 		return posts.size()
 	}
 
 	void open_update_page_of_latest() {
-		this.open_update_page_by_index(1)
+		open_update_page_by_index(1)
 	}
 
 	void open_update_page_by_index(int index) {
-		DriverFactory.changeWebDriver(browser)
-		WebElement article = WebUI.findWebElement(POST_BY_INDEX(index), TIMEOUT)
+		WebElement article = browser.findElement(POST_BY_INDEX(index))
 		if (article != null) {
-			this.open_update_page(article)
+			open_update_page(article)
 		} else {
 			throw new IllegalArgumentException("no <article> found; index: ${index}")
 		}
 	}
 
-	void open_update_pagee_by_postid(String postid) {
-		DriverFactory.changeWebDriver(browser)
-		WebElement article = WebUI.findWebElement(POST_BY_POSTID(postid))
+	void open_update_page_by_postid(String postid) {
+		WebElement article = browser.findElement(POST_BY_POSTID(postid))
 		if (article != null) {
-			this.open_update_page(article)
+			open_update_page(article)
 		} else {
 			throw new IllegalArgumentException("no <article> found; postid: ${postid}")
 		}
@@ -134,9 +124,8 @@ class IndexPage {
 
 	static void open_update_page(WebElement article) {
 		Objects.requireNonNull(browser)
-		// I could not translate "WebElement.findElement(SeleniumBy.xpath("..."))" to Katalon Studio's WebUI.* keywords
-		WebElement anchor = article.findElement(SeleniumBy.xpath(
-				"//a[contains(text(), 'Edit')]"))
+		WebElement anchor = article.findElement(
+				By.xpath("//a[contains(text(), 'Edit')]"))
 		if (anchor != null) {
 			anchor.click()
 		} else {
@@ -145,12 +134,11 @@ class IndexPage {
 	}
 
 	Post get_post_latest() {
-		return this.get_post_by_index(1)
+		return get_post_by_index(1)
 	}
 
 	Post get_post_by_index(int index) {
-		DriverFactory.changeWebDriver(browser)
-		WebElement article = WebUI.findWebElement(POST_BY_INDEX(index))
+		WebElement article = browser.findElement(POST_BY_INDEX(index))
 		if (article != null) {
 			return new Post(article)
 		} else {
@@ -160,8 +148,7 @@ class IndexPage {
 
 	Post get_post_by_postid(String postid) {
 		Objects.requireNonNull(postid)
-		DriverFactory.changeWebDriver(browser)
-		WebElement article = WebUI.findWebElement(POST_BY_POSTID(postid))
+		WebElement article = browser.findElement(POST_BY_POSTID(postid))
 		if (article != null) {
 			return new Post(article)
 		} else {
@@ -170,8 +157,7 @@ class IndexPage {
 	}
 
 	List<Post> get_posts() {
-		DriverFactory.changeWebDriver(browser)
-		List<WebElement> articleElementList = WebUI.findWebElements(POSTS, TIMEOUT)
+		List<WebElement> articleElementList = browser.findElements(POSTS)
 		return articleElementList.stream()
 				.map({ webElement ->
 					new Post(webElement)
@@ -181,8 +167,7 @@ class IndexPage {
 
 	List<Post> get_posts_by(User user) {
 		Objects.requireNonNull(user)
-		DriverFactory.changeWebDriver(browser)
-		List<WebElement> posts = WebUI.findWebElements(POSTS, TIMEOUT)
+		List<WebElement> posts = browser.findElements(POSTS)
 		return posts.stream()
 				.map({ webElement ->
 					new Post(webElement)
@@ -194,8 +179,7 @@ class IndexPage {
 	}
 
 	URL get_url() {
-		DriverFactory.changeWebDriver(browser)
-		String url = WebUI.getUrl()
+		String url = browser.getCurrentUrl()
 		return new URL(url)
 	}
 

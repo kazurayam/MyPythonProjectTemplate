@@ -2,34 +2,24 @@ package flaskrtest.actions
 
 import org.openqa.selenium.WebDriver
 
-import com.kazurayam.ks.visualinspection.MaterializingContext
-import com.kms.katalon.core.util.KeywordUtil
 
 import flaskrtest.data.User
 import flaskrtest.pages.auth.LogInPage
 import flaskrtest.pages.auth.RegisterCredentialPage
 import flaskrtest.pages.blog.IndexPage
-
-import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class LoginAction {
 
-	static void do_login(WebDriver browser, URL url, User user) {
-		do_login(browser, url, user, MaterializingContext.NULL_OBJECT)
-	}
+	private final Logger logger = LoggerFactory.getLogger(this.getClass())
 
-	/**
-	 *
-	 * @param browser
-	 * @param username
-	 * @param password
-	 * @return
-	 */
-	static void do_login(WebDriver browser, URL startAt, User user, MaterializingContext matz) {
+	LoginAction() {}
+
+	void do_login(WebDriver browser, URL startAt, User user) {
 		Objects.requireNonNull(browser)
 		Objects.requireNonNull(startAt)
 		Objects.requireNonNull(user)
-		Objects.requireNonNull(matz)
 
 		// now we go to the Index page
 		IndexPage indexPage = new IndexPage(browser)
@@ -41,9 +31,8 @@ class LoginAction {
 		assert indexPage.login_anchor_exists()
 
 		// take screenshot
-		URL url = new URL(WebUI.getUrl())
-		matz.materialize(url, ["step": "1"])
-		WebUI.comment("step1 ${url.toString()}")
+		URL url = new URL(browser.getCurrentUrl())
+		println("step1 ${url.toString()}")
 
 		// we want to navigate to the Register page
 		indexPage.open_register_page()
@@ -60,9 +49,8 @@ class LoginAction {
 		regPage.type_password(user.getPassword())
 
 		// take screenshot
-		url = new URL(WebUI.getUrl())
-		matz.materialize(url, ["step": "2"])
-		WebUI.comment("step2 ${url.toString()}")
+		url = new URL(browser.getCurrentUrl())
+		println("step2 ${url.toString()}")
 
 
 		// try registering the credential of the user
@@ -70,7 +58,7 @@ class LoginAction {
 
 		// check if the user is already registered
 		if (regPage.flash_exists()) {
-			KeywordUtil.markWarning("username ${user.toString()} is already registered.")
+			logger.warn("username ${user.toString()} is already registered.")
 			// we are still on the Register page
 			// so we want to navigate to the Log In page
 			regPage.do_login()
@@ -85,9 +73,8 @@ class LoginAction {
 		loginPage.type_password(user.getPassword())
 
 		// take screenshot
-		url = new URL(WebUI.getUrl())
-		matz.materialize(url, ["step": "3"])
-		WebUI.comment("step3 ${url.toString()}")
+		url = new URL(browser.getCurrentUrl())
+		println("step3 ${url.toString()}")
 
 		loginPage.do_login()
 

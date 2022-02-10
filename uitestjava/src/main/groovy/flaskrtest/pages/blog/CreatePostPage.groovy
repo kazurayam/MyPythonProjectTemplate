@@ -3,16 +3,13 @@ package flaskrtest.pages.blog
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 
-import com.kazurayam.ks.testobject.By
-import com.kms.katalon.core.testobject.TestObject
-import com.kms.katalon.core.webui.driver.DriverFactory
-import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
+import org.openqa.selenium.By
 
 public class CreatePostPage {
 
-	static final TestObject TITLE_INPUT = By.id('title')
-	static final TestObject BODY_INPUT  = By.id('body')
-	static final TestObject SAVE_BUTTON = By.xpath('//input[@type="submit" and @value="Save"]')
+	static final By TITLE_INPUT = By.id('title')
+	static final By BODY_INPUT  = By.id('body')
+	static final By SAVE_BUTTON = By.xpath('//input[@type="submit" and @value="Save"]')
 
 	private WebDriver browser
 
@@ -21,31 +18,29 @@ public class CreatePostPage {
 	}
 
 	URL get_url() {
-		DriverFactory.changeWebDriver(browser)
-		String url = WebUI.getUrl()
+		String url = browser.getCurrentUrl()
 		return new URL(url)
 	}
 
 	Boolean save_button_exists() {
-		DriverFactory.changeWebDriver(browser)
-		WebElement save_button = WebUI.findWebElement(SAVE_BUTTON)
+		WebElement save_button = browser.findElement(SAVE_BUTTON)
 		return save_button != null
 	}
 
 	void type_title(String title) {
-		DriverFactory.changeWebDriver(browser)
-		WebUI.clearText(TITLE_INPUT)
-		WebUI.sendKeys(TITLE_INPUT, title)
+		WebElement e = browser.findElement(TITLE_INPUT)
+		e.clear()
+		e.sendKeys(title)
 	}
 
 	void type_body(String body) {
-		DriverFactory.changeWebDriver(browser)
-		WebUI.clearText(BODY_INPUT)
-		WebUI.sendKeys(BODY_INPUT, body)
+		WebElement e = browser.findElement(BODY_INPUT)
+		e.clear()
+		e.sendKeys(body)
 	}
 
 	void do_save() {
-		DriverFactory.changeWebDriver(browser)
-		WebUI.click(SAVE_BUTTON)
+		WebElement e = browser.findElement(SAVE_BUTTON)
+		e.click()
 	}
 }
