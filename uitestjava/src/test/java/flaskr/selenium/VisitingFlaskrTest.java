@@ -10,10 +10,13 @@ import com.kazurayam.subprocessj.docker.model.ContainerId;
 import com.kazurayam.subprocessj.docker.model.DockerImage;
 import com.kazurayam.subprocessj.docker.model.PublishedPort;
 import flaskr.pom.actions.LoginAction;
+import flaskr.pom.actions.LogoutAction;
 import flaskr.pom.actions.PostAction;
 import flaskr.pom.data.Song;
 import flaskr.pom.data.Songs;
 import flaskr.pom.data.User;
+import flaskr.pom.pages.blog.IndexPage;
+import flaskr.pom.pages.blog.Post;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -31,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -69,7 +73,30 @@ public class VisitingFlaskrTest {
         // Alice makes a post with a song by Miyuki Nakajima
         PostAction.new_post(browser0, indexUrl, User.Alice, song_of_miyuki);
 
-        fail("Still we have a lot to do");
+        // ensure Alice finds the song that she posted
+        checkIfPostBySomebodyPresent(browser0, indexUrl, User.Alice, User.Alice, song_of_miyuki);
+
+        // logout
+        LogoutAction.do_logout(browser0, indexUrl);
+    }
+
+    private void checkIfPostBySomebodyPresent(WebDriver browser, URL url, User me, User somebody, Song song) {
+        // let's start from the Index page
+        IndexPage indexPage = new IndexPage(browser);
+        indexPage.load(url);
+
+        // find a post by somebody
+        List<Post> postsBySomebody = indexPage.get_posts_by(somebody);
+
+        assertTrue(postsBySomebody.size() > 0,
+                String.format("indexPage.get_posts_by(%s) returned 0", somebody));
+
+        String foundTitle = postsBySomebody.get(0).get_title();
+        assertNotNull(foundTitle, "foundTitle is null");
+        assertTrue(foundTitle.contains(song.getTitle()),
+                String.format("%s expected to find a post" +
+                        " by %s with a song \"%s\" but got \"%s\"",
+                        me, somebody, song.getTitle(), foundTitle));
     }
 
     /**
