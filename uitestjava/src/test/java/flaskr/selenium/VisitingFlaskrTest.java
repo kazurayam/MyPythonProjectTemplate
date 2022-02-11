@@ -10,6 +10,7 @@ import com.kazurayam.subprocessj.docker.model.ContainerId;
 import com.kazurayam.subprocessj.docker.model.DockerImage;
 import com.kazurayam.subprocessj.docker.model.PublishedPort;
 import flaskr.pom.data.User;
+import flaskr.pom.pages.auth.LogInPage;
 import flaskr.pom.pages.auth.RegisterCredentialPage;
 import flaskr.pom.pages.blog.IndexPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -54,6 +55,7 @@ public class VisitingFlaskrTest {
      * 3. makes a post with a song's lyric as Alice, and save it
      * 4. makes sure that Alice's new post is displayed in the index page
      */
+    @Test
     public void test_Alice_makes_a_post_with_a_song() {
         driver.navigate().to(String.format("http://127.0.0.1:%d/", HOST_PORT));
 
@@ -89,18 +91,21 @@ public class VisitingFlaskrTest {
 
         // ensure we are on the Log In page
         LogInPage logInPage = new LogInPage(driver);
-    }
+        assertTrue(logInPage.login_button_exists());
 
+        // now let's log in
+        logInPage.type_username(username);
+        logInPage.type_password(password);
+        logInPage.do_login();
 
-    private boolean verifyElementPresent(WebDriver driver, By by) {
-        WebElement e = driver.findElement(by);
-        if (e != null) {
-            return true;
-        } else {
-            logger.debug(String.format("no element matches %s in %s",
-                    by.toString(), driver.getCurrentUrl()));
-            return false;
-        }
+        // ensure we are on the Index page
+        indexPage = new IndexPage(driver);
+        assertTrue(indexPage.app_header_exists());
+
+        // ensure we have successfully logged in to it
+        assertTrue(indexPage.nav_span_username_exists(username));
+
+        fail("Still we have a lot to do");
     }
 
     /**
