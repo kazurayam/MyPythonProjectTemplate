@@ -9,10 +9,11 @@ import com.kazurayam.subprocessj.docker.ContainerStopper.ContainerStoppingResult
 import com.kazurayam.subprocessj.docker.model.ContainerId;
 import com.kazurayam.subprocessj.docker.model.DockerImage;
 import com.kazurayam.subprocessj.docker.model.PublishedPort;
+import flaskr.pom.actions.LoginAction;
+import flaskr.pom.actions.PostAction;
+import flaskr.pom.data.Song;
+import flaskr.pom.data.Songs;
 import flaskr.pom.data.User;
-import flaskr.pom.pages.auth.LogInPage;
-import flaskr.pom.pages.auth.RegisterCredentialPage;
-import flaskr.pom.pages.blog.IndexPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -28,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,8 +42,8 @@ public class VisitingFlaskrTest {
      */
     @Test
     public void test_page_header() {
-        driver.navigate().to(String.format("http://127.0.0.1:%d/", HOST_PORT));
-        WebElement siteName = driver.findElement(By.xpath("/html/body/nav/h1"));
+        browser0.navigate().to(String.format("http://127.0.0.1:%d/", HOST_PORT));
+        WebElement siteName = browser0.findElement(By.xpath("/html/body/nav/h1"));
         assertNotNull(siteName);
         assertEquals("Flaskr", siteName.getText());
     }
@@ -56,54 +58,16 @@ public class VisitingFlaskrTest {
      * 4. makes sure that Alice's new post is displayed in the index page
      */
     @Test
-    public void test_Alice_makes_a_post_with_a_song() {
-        driver.navigate().to(String.format("http://127.0.0.1:%d/", HOST_PORT));
+    public void test_Alice_makes_a_post_with_a_song() throws Exception {
+        URL indexUrl = new URL(String.format("http://127.0.0.1:%d/", HOST_PORT));
 
-        /// create a user "Alice"
-        String username = User.Alice.toString();
-        String password = User.Alice.getPassword();
+        // Alice logs in
+        LoginAction.do_login(browser0, indexUrl, User.Alice);
 
-        // ensure we are on the index page
-        IndexPage indexPage = new IndexPage(driver);
-        assertTrue(indexPage.app_header_exists());
-        assertTrue(indexPage.register_anchor_exists());
-        assertTrue(indexPage.login_anchor_exists());
+        Song song_of_miyuki = Songs.get(0);
 
-        // we want to navigate to the Register page
-        indexPage.open_register_page();
-
-        // ensure we are on the Register page
-        RegisterCredentialPage registerPage = new RegisterCredentialPage(driver);
-        assertTrue(registerPage.register_button_exists());
-
-        // we want to register a user
-        registerPage.type_username(username);
-        registerPage.type_password(password);
-        registerPage.do_register();
-
-        // check if the user is already registered
-        if (registerPage.flash_exists()) {
-            logger.warn(String.format("user %s was already registered", username));
-            // we are still on the Register page
-            // so we want to navigate to the Log In page
-            registerPage.do_login();
-        }
-
-        // ensure we are on the Log In page
-        LogInPage logInPage = new LogInPage(driver);
-        assertTrue(logInPage.login_button_exists());
-
-        // now let's log in
-        logInPage.type_username(username);
-        logInPage.type_password(password);
-        logInPage.do_login();
-
-        // ensure we are on the Index page
-        indexPage = new IndexPage(driver);
-        assertTrue(indexPage.app_header_exists());
-
-        // ensure we have successfully logged in to it
-        assertTrue(indexPage.nav_span_username_exists(username));
+        // Alice makes a post with a song by Miyuki Nakajima
+        PostAction.new_post(browser0, indexUrl, User.Alice, song_of_miyuki);
 
         fail("Still we have a lot to do");
     }
@@ -135,7 +99,7 @@ public class VisitingFlaskrTest {
      */
     @BeforeEach
     public void beforeEach() {
-        driver = new ChromeDriver();
+        browser0 = new ChromeDriver();
     }
 
     /**
@@ -143,9 +107,9 @@ public class VisitingFlaskrTest {
      */
     @AfterEach
     public void afterEach() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
+        if (browser0 != null) {
+            browser0.quit();
+            browser0 = null;
         }
     }
 
@@ -184,13 +148,13 @@ public class VisitingFlaskrTest {
         }
     }
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private static final int HOST_PORT = 3080;
 
     private static final PublishedPort publishedPort = new PublishedPort(HOST_PORT, 8080);
     private static final DockerImage image = new DockerImage("kazurayam/flaskr-kazurayam:1.1.0");
 
-    private WebDriver driver = null;
+    private WebDriver browser0 = null;
 
 }

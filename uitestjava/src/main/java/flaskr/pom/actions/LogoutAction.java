@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.Objects;
 
 public class LogoutAction {
+
 	public static void do_logout(WebDriver browser, URL startAt) {
 		Objects.requireNonNull(browser);
 		Objects.requireNonNull(startAt);

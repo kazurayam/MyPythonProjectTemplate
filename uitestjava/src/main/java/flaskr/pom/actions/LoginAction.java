@@ -13,12 +13,9 @@ import java.util.Objects;
 
 public class LoginAction {
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final Logger logger = LoggerFactory.getLogger(LoginAction.class);
 
-	public LoginAction() {
-	}
-
-	public void do_login(WebDriver browser, URL startAt, final User user) {
+	public static void do_login(WebDriver browser, URL startAt, final User user) {
 		Objects.requireNonNull(browser);
 		Objects.requireNonNull(startAt);
 		Objects.requireNonNull(user);
