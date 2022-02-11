@@ -9,6 +9,9 @@ import com.kazurayam.subprocessj.docker.ContainerStopper.ContainerStoppingResult
 import com.kazurayam.subprocessj.docker.model.ContainerId;
 import com.kazurayam.subprocessj.docker.model.DockerImage;
 import com.kazurayam.subprocessj.docker.model.PublishedPort;
+import flaskr.pom.data.User;
+import flaskr.pom.pages.auth.RegisterCredentialPage;
+import flaskr.pom.pages.blog.IndexPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -19,22 +22,86 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class VisitingFlaskrTest {
 
-    private static final int HOST_PORT = 3080;
 
-    private static final PublishedPort publishedPort = new PublishedPort(HOST_PORT, 8080);
-    private static final DockerImage image = new DockerImage("kazurayam/flaskr-kazurayam:1.1.0");
+    /**
+     * This test will verify if the site's name in the page header is "Flaskr".
+     */
+    @Test
+    public void test_page_header() {
+        driver.navigate().to(String.format("http://127.0.0.1:%d/", HOST_PORT));
+        WebElement siteName = driver.findElement(By.xpath("/html/body/nav/h1"));
+        assertNotNull(siteName);
+        assertEquals("Flaskr", siteName.getText());
+    }
 
-    private WebDriver driver = null;
+    /**
+     * This test will do the following steps
+     *
+     * 0. targets http://127.0.0.1/
+     * 1. creates a user named "Alice"
+     * 2. logs-in to the blog site as Alice
+     * 3. makes a post with a song's lyric as Alice, and save it
+     * 4. makes sure that Alice's new post is displayed in the index page
+     */
+    public void test_Alice_makes_a_post_with_a_song() {
+        driver.navigate().to(String.format("http://127.0.0.1:%d/", HOST_PORT));
+
+        /// create a user "Alice"
+        String username = User.Alice.toString();
+        String password = User.Alice.getPassword();
+
+        // ensure we are on the index page
+        IndexPage indexPage = new IndexPage(driver);
+        assertTrue(indexPage.app_header_exists());
+        assertTrue(indexPage.register_anchor_exists());
+        assertTrue(indexPage.login_anchor_exists());
+
+        // we want to navigate to the Register page
+        indexPage.open_register_page();
+
+        // ensure we are on the Register page
+        RegisterCredentialPage registerPage = new RegisterCredentialPage(driver);
+        assertTrue(registerPage.register_button_exists());
+
+        // we want to register a user
+        registerPage.type_username(username);
+        registerPage.type_password(password);
+        registerPage.do_register();
+
+        // check if the user is already registered
+        if (registerPage.flash_exists()) {
+            logger.warn(String.format("user %s was already registered", username));
+            // we are still on the Register page
+            // so we want to navigate to the Log In page
+            registerPage.do_login();
+        }
+
+        // ensure we are on the Log In page
+        LogInPage logInPage = new LogInPage(driver);
+    }
+
+
+    private boolean verifyElementPresent(WebDriver driver, By by) {
+        WebElement e = driver.findElement(by);
+        if (e != null) {
+            return true;
+        } else {
+            logger.debug(String.format("no element matches %s in %s",
+                    by.toString(), driver.getCurrentUrl()));
+            return false;
+        }
+    }
 
     /**
      * start a Docker Container by "docker run" command.
@@ -64,19 +131,6 @@ public class VisitingFlaskrTest {
     @BeforeEach
     public void beforeEach() {
         driver = new ChromeDriver();
-    }
-
-    /**
-     * Test an HTML page.
-     * Will verify if the site name in the page header is "Flaskr".
-     */
-    @Test
-    public void test_page_header() {
-        driver.navigate().to(String.format("http://127.0.0.1:%d/", HOST_PORT));
-        WebElement siteName = driver.findElement(By.xpath("/html/body/nav/h1"));
-        assertNotNull(siteName);
-        assertEquals("Flaskr", siteName.getText());
-        delay(2000);
     }
 
     /**
@@ -124,4 +178,14 @@ public class VisitingFlaskrTest {
             e.printStackTrace();
         }
     }
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private static final int HOST_PORT = 3080;
+
+    private static final PublishedPort publishedPort = new PublishedPort(HOST_PORT, 8080);
+    private static final DockerImage image = new DockerImage("kazurayam/flaskr-kazurayam:1.1.0");
+
+    private WebDriver driver = null;
+
 }
