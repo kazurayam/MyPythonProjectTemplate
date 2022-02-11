@@ -8,14 +8,34 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Objects;
 
-public class LoginAction {
+public class LoginAction extends Action {
 
-	private static final Logger logger = LoggerFactory.getLogger(LoginAction.class);
+	private final Logger logger;
 
-	public static void do_login(WebDriver browser, URL startAt, final User user) {
+	public LoginAction() {
+		logger = LoggerFactory.getLogger(this.getClass());
+	}
+
+	/**
+	 *
+	 */
+	public void do_login(WebDriver browser, URL startAt, final User user)
+			throws MalformedURLException
+	{
+		do_login(browser, startAt, user, new ActionListenerBaseImpl());
+	}
+
+	/**
+	 *
+	 */
+	public void do_login(WebDriver browser, URL startAt, final User user, ActionListener listener)
+			throws MalformedURLException
+	{
 		Objects.requireNonNull(browser);
 		Objects.requireNonNull(startAt);
 		Objects.requireNonNull(user);
@@ -30,7 +50,8 @@ public class LoginAction {
 		assert indexPage.login_anchor_exists();
 
 		// notify progress
-		logger.info("step1 " + browser.getCurrentUrl());
+		listener.on(LoginAction.class, new URL(browser.getCurrentUrl()),
+				Collections.singletonMap("step", "1"));
 
 		// we want to navigate to the Register page
 		indexPage.open_register_page();
@@ -48,7 +69,8 @@ public class LoginAction {
 
 
 		// notify progress
-		logger.info("step2 " + browser.getCurrentUrl());// take screenshot
+		listener.on(LoginAction.class, new URL(browser.getCurrentUrl()),
+				Collections.singletonMap("step", "2"));
 
 
 		// try registering the credential of the user
@@ -72,11 +94,12 @@ public class LoginAction {
 		loginPage.type_password(user.getPassword());
 
 		// notify progress
-		logger.info("step3 " + browser.getCurrentUrl());
+		listener.on(LoginAction.class, new URL(browser.getCurrentUrl()),
+				Collections.singletonMap("step", "3"));
 
 		loginPage.do_login();
 
-		// now we should be are on the index page
+		// now we should be on the index page
 		// make sure if he/she has successfully logged in?
 		assert indexPage.nav_span_username_exists(user.toString());
 	}

@@ -66,18 +66,21 @@ public class VisitingFlaskrTest {
         URL indexUrl = new URL(String.format("http://127.0.0.1:%d/", HOST_PORT));
 
         // Alice logs in
-        LoginAction.do_login(browser0, indexUrl, User.Alice);
+        LoginAction loginAction = new LoginAction();
+        loginAction.do_login(browser0, indexUrl, User.Alice);
 
         Song song_of_miyuki = Songs.get(0);
 
         // Alice makes a post with a song by Miyuki Nakajima
-        PostAction.new_post(browser0, indexUrl, User.Alice, song_of_miyuki);
+        PostAction postAction = new PostAction();
+        postAction.new_post(browser0, indexUrl, User.Alice, song_of_miyuki);
 
         // ensure Alice finds the song that she posted
         checkIfPostBySomebodyPresent(browser0, indexUrl, User.Alice, User.Alice, song_of_miyuki);
 
         // logout
-        LogoutAction.do_logout(browser0, indexUrl);
+        LogoutAction logoutAction = new LogoutAction();
+        logoutAction.do_logout(browser0, indexUrl);
     }
 
     private void checkIfPostBySomebodyPresent(WebDriver browser, URL url, User me, User somebody, Song song) {

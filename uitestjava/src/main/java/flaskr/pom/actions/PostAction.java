@@ -6,19 +6,27 @@ import flaskr.pom.data.Song;
 import flaskr.pom.data.User;
 import org.openqa.selenium.WebDriver;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Objects;
 
-public class PostAction {
+public class PostAction extends Action {
+
+	public PostAction() {}
 
 	/**
-	 * @param browser
-	 * @param startAt
-	 * @param user
-	 * @param song
-	 * @return
+	 *
 	 */
-	public static void new_post(WebDriver browser, URL startAt, User user, Song song) {
+	public void new_post(WebDriver browser, URL startAt, User user, Song song) throws MalformedURLException {
+		new_post(browser, startAt, user, song,
+				new ActionListenerBaseImpl());
+	}
+
+	/**
+	 *
+	 */
+	public void new_post(WebDriver browser, URL startAt, User user, Song song, ActionListener listener) throws MalformedURLException {
 		Objects.requireNonNull(browser);
 		Objects.requireNonNull(startAt);
 		Objects.requireNonNull(song);
@@ -34,12 +42,20 @@ public class PostAction {
 		CreatePostPage createPage = new CreatePostPage(browser);
 		assert createPage.save_button_exists();
 
+		// notify progress
+		listener.on(PostAction.class, new URL(browser.getCurrentUrl()),
+				Collections.singletonMap("step", "4"));
+
 		// type in the title
 		String title = song.getTitle() + " --- " + song.getBy();
 		createPage.type_title(title);
 
 		// type in the body
 		createPage.type_body(song.getLyric());
+
+		// notify progress
+		listener.on(PostAction.class, new URL(browser.getCurrentUrl()),
+				Collections.singletonMap("step", "5"));
 
 		// save the post
 		createPage.do_save();
@@ -49,6 +65,11 @@ public class PostAction {
 		assert indexPage.get_post_latest().get_title().equals(title);
 		assert indexPage.get_post_latest().get_about().contains(user.toString());
 		assert indexPage.get_post_latest().get_body().equals(song.getLyric());
+
+		// notify progress
+		listener.on(PostAction.class, new URL(browser.getCurrentUrl()),
+				Collections.singletonMap("step", "6"));
+
 	}
 
 }
