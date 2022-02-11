@@ -1,9 +1,9 @@
-package flaskr.pom.actions;
+package com.kazurayam.uitestjava.flaskr.pom.actions;
 
-import flaskr.pom.pages.blog.CreatePostPage;
-import flaskr.pom.pages.blog.IndexPage;
-import flaskr.pom.data.Song;
-import flaskr.pom.data.User;
+import com.kazurayam.uitestjava.flaskr.pom.pages.blog.CreatePostPage;
+import com.kazurayam.uitestjava.flaskr.pom.pages.blog.IndexPage;
+import com.kazurayam.uitestjava.flaskr.pom.data.Song;
+import com.kazurayam.uitestjava.flaskr.pom.data.User;
 import org.openqa.selenium.WebDriver;
 
 import java.net.MalformedURLException;

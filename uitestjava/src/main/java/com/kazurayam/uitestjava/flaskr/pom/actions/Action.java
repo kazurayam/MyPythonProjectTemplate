@@ -1,4 +1,4 @@
-package flaskr.pom.actions;
+package com.kazurayam.uitestjava.flaskr.pom.actions;
 
 public abstract class Action {
 }

@@ -1,4 +1,4 @@
-package flaskr.pom.pages.auth;
+package com.kazurayam.uitestjava.flaskr.pom.pages.auth;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

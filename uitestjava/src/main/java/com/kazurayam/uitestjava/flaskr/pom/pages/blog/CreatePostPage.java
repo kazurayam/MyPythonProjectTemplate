@@ -1,4 +1,4 @@
-package flaskr.pom.pages.blog;
+package com.kazurayam.uitestjava.flaskr.pom.pages.blog;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

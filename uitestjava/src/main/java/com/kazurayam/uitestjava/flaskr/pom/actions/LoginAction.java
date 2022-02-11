@@ -1,9 +1,9 @@
-package flaskr.pom.actions;
+package com.kazurayam.uitestjava.flaskr.pom.actions;
 
-import flaskr.pom.pages.auth.RegisterCredentialPage;
-import flaskr.pom.pages.blog.IndexPage;
-import flaskr.pom.data.User;
-import flaskr.pom.pages.auth.LogInPage;
+import com.kazurayam.uitestjava.flaskr.pom.pages.auth.RegisterCredentialPage;
+import com.kazurayam.uitestjava.flaskr.pom.pages.blog.IndexPage;
+import com.kazurayam.uitestjava.flaskr.pom.data.User;
+import com.kazurayam.uitestjava.flaskr.pom.pages.auth.LogInPage;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

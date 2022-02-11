@@ -1,4 +1,4 @@
-package flaskr.selenium;
+package com.kazurayam.uitestjava.flaskr.selenium;
 
 public class VisualInspectionForFlaskrTest {
 }

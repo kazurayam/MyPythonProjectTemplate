@@ -1,4 +1,4 @@
-package flaskr.pom.actions;
+package com.kazurayam.uitestjava.flaskr.pom.actions;
 
 import java.net.URL;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package flaskr.pom.data;
+package com.kazurayam.uitestjava.flaskr.pom.data;
 
 import com.google.gson.Gson;
 

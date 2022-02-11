@@ -1,4 +1,4 @@
-package flaskr.selenium;
+package com.kazurayam.uitestjava.flaskr.selenium;
 
 import com.kazurayam.subprocessj.docker.ContainerFinder;
 import com.kazurayam.subprocessj.docker.ContainerFinder.ContainerFindingResult;
@@ -9,14 +9,14 @@ import com.kazurayam.subprocessj.docker.ContainerStopper.ContainerStoppingResult
 import com.kazurayam.subprocessj.docker.model.ContainerId;
 import com.kazurayam.subprocessj.docker.model.DockerImage;
 import com.kazurayam.subprocessj.docker.model.PublishedPort;
-import flaskr.pom.actions.LoginAction;
-import flaskr.pom.actions.LogoutAction;
-import flaskr.pom.actions.PostAction;
-import flaskr.pom.data.Song;
-import flaskr.pom.data.Songs;
-import flaskr.pom.data.User;
-import flaskr.pom.pages.blog.IndexPage;
-import flaskr.pom.pages.blog.Post;
+import com.kazurayam.uitestjava.flaskr.pom.actions.LoginAction;
+import com.kazurayam.uitestjava.flaskr.pom.actions.LogoutAction;
+import com.kazurayam.uitestjava.flaskr.pom.actions.PostAction;
+import com.kazurayam.uitestjava.flaskr.pom.data.Song;
+import com.kazurayam.uitestjava.flaskr.pom.data.Songs;
+import com.kazurayam.uitestjava.flaskr.pom.data.User;
+import com.kazurayam.uitestjava.flaskr.pom.pages.blog.IndexPage;
+import com.kazurayam.uitestjava.flaskr.pom.pages.blog.Post;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;

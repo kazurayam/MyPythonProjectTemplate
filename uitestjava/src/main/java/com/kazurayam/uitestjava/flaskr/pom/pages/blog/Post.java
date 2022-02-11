@@ -1,4 +1,4 @@
-package flaskr.pom.pages.blog;
+package com.kazurayam.uitestjava.flaskr.pom.pages.blog;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

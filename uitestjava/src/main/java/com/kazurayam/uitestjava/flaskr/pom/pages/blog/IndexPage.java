@@ -1,6 +1,6 @@
-package flaskr.pom.pages.blog;
+package com.kazurayam.uitestjava.flaskr.pom.pages.blog;
 
-import flaskr.pom.data.User;
+import com.kazurayam.uitestjava.flaskr.pom.data.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
