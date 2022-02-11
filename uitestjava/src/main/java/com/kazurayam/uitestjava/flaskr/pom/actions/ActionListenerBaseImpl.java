@@ -11,6 +11,7 @@ public class ActionListenerBaseImpl extends ActionListener {
 
     public ActionListenerBaseImpl() {}
 
+    @SuppressWarnings("rawtypes")
     @Override
     public void on(Class clazz, URL url, Map<String, String> attributes) {
         Logger logger = LoggerFactory.getLogger(clazz);

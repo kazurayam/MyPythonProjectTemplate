@@ -4,8 +4,8 @@ plugins {
     id 'idea'
 }
 
-group 'com.kazurayam.flaskrtest'
-version '0.1.0-SNAPSHOT'
+group 'com.kazurayam'
+version '0.1.0'
 
 repositories {
     mavenCentral()
