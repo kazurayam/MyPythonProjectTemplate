@@ -73,5 +73,5 @@ public class RegisterCredentialPage {
 	private static final By REGISTER_BUTTON = By.xpath("//input[@type=\"submit\" and @value=\"Register\"]");
 	private static final By LOGIN_ANCHOR = By.xpath("//a[contains(text(), \"Log In\")]");
 	private static final By DIV_FLASH = By.xpath("//div[contains(@class, \"flash\")]");
-	private WebDriver browser;
+	private final WebDriver browser;
 }

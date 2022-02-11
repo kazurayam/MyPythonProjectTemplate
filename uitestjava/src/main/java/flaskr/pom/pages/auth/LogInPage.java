@@ -53,5 +53,5 @@ public class LogInPage {
 	private static final By USERNAME_INPUT = By.id("username");
 	private static final By PASSWORD_INPUT = By.id("password");
 	private static final By LOGIN_BUTTON = By.xpath("//input[@type=\"submit\" and @value=\"Log In\"]");
-	private WebDriver browser;
+	private final WebDriver browser;
 }

@@ -13,8 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy-all:3.0.8'
-    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.1.1'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
     implementation 'org.slf4j:slf4j-api:1.7.35'
     implementation 'org.slf4j:slf4j-simple:1.7.35'
 

@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.Map;
 
 import com.google.gson.Gson;
-import flaskr.pom.actions.ActionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

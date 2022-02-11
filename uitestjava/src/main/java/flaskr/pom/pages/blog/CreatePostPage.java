@@ -54,5 +54,5 @@ public class CreatePostPage {
 	private static final By TITLE_INPUT = By.id("title");
 	private static final By BODY_INPUT = By.id("body");
 	private static final By SAVE_BUTTON = By.xpath("//input[@type=\"submit\" and @value=\"Save\"]");
-	private WebDriver browser;
+	private final WebDriver browser;
 }

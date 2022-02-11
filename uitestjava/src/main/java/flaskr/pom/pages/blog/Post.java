@@ -4,18 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
- * wraps an blog post page in the Flaskr web app.
+ * wraps a blog post page in the Flaskr web app.
  * provides accessor methods to title and body
  *
  * <article class="post">
@@ -80,8 +77,8 @@ public class Post {
 
 	@Override
 	public String toString() {
-		LinkedHashMap<String, Serializable> map = new LinkedHashMap<String, Serializable>(2);
-		LinkedHashMap<String, String> map1 = new LinkedHashMap<String, String>(3);
+		LinkedHashMap<String, Serializable> map = new LinkedHashMap<>(2);
+		LinkedHashMap<String, String> map1 = new LinkedHashMap<>(3);
 		map1.put("title", get_title());
 		map1.put("about", get_about());
 		map1.put("id", get_postid());
@@ -115,7 +112,6 @@ public class Post {
 		this.article = article;
 	}
 
-	private Logger logger_ = LoggerFactory.getLogger(getClass());
 	private static final By TITLE = By.xpath("header/div/h1");
 	private static final By BODY = By.xpath("p[1]");
 	private static final By EDIT = By.xpath("header/a");

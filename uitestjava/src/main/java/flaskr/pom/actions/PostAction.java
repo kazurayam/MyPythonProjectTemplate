@@ -69,7 +69,6 @@ public class PostAction extends Action {
 		// notify progress
 		listener.on(PostAction.class, new URL(browser.getCurrentUrl()),
 				Collections.singletonMap("step", "6"));
-
 	}
 
 }

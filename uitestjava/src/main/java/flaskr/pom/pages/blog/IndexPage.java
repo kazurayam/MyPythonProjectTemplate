@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -55,37 +54,37 @@ public class IndexPage {
 	}
 
 	public Boolean app_header_exists() {
-		WebDriverWait wait = new WebDriverWait(browser, Duration.ofSeconds(TIMEOUT));
+		WebDriverWait wait = new WebDriverWait(browser, TIMEOUT);
 		WebElement e = wait.until(ExpectedConditions.elementToBeClickable(APP_HEADER));
 		return e != null;
 	}
 
 	public Boolean register_anchor_exists() {
-		WebDriverWait wait = new WebDriverWait(browser, Duration.ofSeconds(TIMEOUT));
+		WebDriverWait wait = new WebDriverWait(browser, TIMEOUT);
 		WebElement e = wait.until(ExpectedConditions.elementToBeClickable(REGISTER_ANCHOR));
 		return e !=null;
 	}
 
 	public Boolean login_anchor_exists() {
-		WebDriverWait wait = new WebDriverWait(browser, Duration.ofSeconds(TIMEOUT));
+		WebDriverWait wait = new WebDriverWait(browser, TIMEOUT);
 		WebElement e = wait.until(ExpectedConditions.elementToBeClickable(LOGIN_ANCHOR));
 		return e != null;
 	}
 
 	public Boolean logout_anchor_exists() {
-		WebDriverWait wait = new WebDriverWait(browser, Duration.ofSeconds(TIMEOUT));
+		WebDriverWait wait = new WebDriverWait(browser, TIMEOUT);
 		WebElement e = wait.until(ExpectedConditions.elementToBeClickable(LOGOUT_ANCHOR));
 		return e != null;
 	}
 
 	public Boolean posts_header_exists() {
-		WebDriverWait wait = new WebDriverWait(browser, Duration.ofSeconds(TIMEOUT));
+		WebDriverWait wait = new WebDriverWait(browser, TIMEOUT);
 		WebElement e = wait.until(ExpectedConditions.elementToBeClickable(POSTS_HEADER));
 		return e != null;
 	}
 
 	public Boolean nav_span_username_exists(final String username) {
-		WebDriverWait wait = new WebDriverWait(browser, Duration.ofSeconds(TIMEOUT));
+		WebDriverWait wait = new WebDriverWait(browser, TIMEOUT);
 		By by = By.xpath(String.format("//nav/ul/li/span[text()='%s']", username));
 		WebElement e = wait.until(ExpectedConditions.elementToBeClickable(by));
 		return e != null;
@@ -224,5 +223,5 @@ public class IndexPage {
 	private static final By NEW_ANCHOR = By.xpath("//a[contains(text(), \"New\")]");
 	private static final By POSTS = By.xpath("//article[@class=\"post\"]");
 	private static final int TIMEOUT = 3;
-	private WebDriver browser = null;
+	private final WebDriver browser;
 }

@@ -6,7 +6,7 @@ public enum User {
 	Bob("LikeARollingStone"),
 	Chage("Say Yes!");
 
-	private User(String password) {
+	User(String password) {
 		this.password = password;
 	}
 

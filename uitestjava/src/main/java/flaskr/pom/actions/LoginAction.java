@@ -78,9 +78,9 @@ public class LoginAction extends Action {
 
 		// check if the user is already registered
 		if (regPage.flash_exists()) {
-			logger.warn("username " + user.toString() + " is already registered.");
+			logger.warn("username " + user + " is already registered.");
 			// we are still on the Register page
-			// so we want to navigate to the Log In page
+			// we want to navigate to the Login page
 			regPage.do_login();
 		}
 
