@@ -370,7 +370,7 @@ To activate this project's virtualenv, run pipenv shell.
 Alternatively, run a command inside the virtualenv with pipenv run.
 ```
 
-[Pipfile](pycliapp/Pipfile)のなかに `[package]`という記述ができて、そのなかに `pipenv` が自動的に追加されます。
+[Pipfile](pycliapp/Pipfile)のなかに `[package]`という記述ができて、そのなかに `pytest` が自動的に追加されます。
 
 ```
 [packages]
