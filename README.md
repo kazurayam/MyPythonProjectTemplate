@@ -115,7 +115,7 @@ $ tree $ROOTPROJ
 └── uitestpy
 ```
 
->なお上記で `ROOTPROJ` という記号を用いていた。これは本レポジトリをわたしのPCのローカルディスクにcloneすることによって作られたディレクトリ（たとえば `~/github/MultipleModulesProjectTemplate`）を表します。
+>なお上記で `ROOTPROJ` という記号を用いていた。これは本レポジトリをわたしのPCのローカルディスクにcloneすることによって作られたディレクトリ（たとえば `~/github/MyPythonProjectTemplate`）を表します。
 
 >サブプロジェクトが３つとはかぎらない。プログラミング言語もPythonだけとはかぎらない。将来、サブプロジェクトをJavaやNodeで作ることもあるだろう。
 

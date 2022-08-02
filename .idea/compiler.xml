@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="uitest.main" target="1.8" />
       <module name="uitest.test" target="1.8" />
+      <module name="uitestjava-flaskr.main" target="1.8" />
+      <module name="uitestjava-flaskr.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
