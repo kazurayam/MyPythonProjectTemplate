@@ -290,7 +290,10 @@ $ROOTPROJディレクトリの直下に `pycliapp` ディレクトリを作り�
 $ cd $ROOTPROJ
 $ mkdir pycliapp
 $ cd pycliapp
-$ export $SUBPROJ=$(pwd)
+$ export SUBPROJ=$(pwd)
+
+$ echo $SUBPROJ
+/Users/yourname/rootprojname/pycliapp
 ```
 
 $SUBPROJディレクトリのなかにPython仮想環境を作りましょう。pipenvを使います。[pipenv](https://pypi.org/project/pipenv/) はPython仮想環境を作るツールです。下記の記事を参考にした。

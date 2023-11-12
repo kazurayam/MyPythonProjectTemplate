@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/docs/docs.iml" filepath="$PROJECT_DIR$/docs/docs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/MyPythonProjectTemplate.iml" filepath="$PROJECT_DIR$/.idea/MyPythonProjectTemplate.iml" />
       <module fileurl="file://$PROJECT_DIR$/pycliapp/pycliapp.iml" filepath="$PROJECT_DIR$/pycliapp/pycliapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/pywebapp/pywebapp.iml" filepath="$PROJECT_DIR$/pywebapp/pywebapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pywebui/pywebui.iml" filepath="$PROJECT_DIR$/pywebui/pywebui.iml" />
       <module fileurl="file://$PROJECT_DIR$/uitestpy/uitestpy.iml" filepath="$PROJECT_DIR$/uitestpy/uitestpy.iml" />
     </modules>
   </component>
